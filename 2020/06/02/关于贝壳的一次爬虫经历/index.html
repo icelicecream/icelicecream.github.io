@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>关于贝壳的一次爬虫经历 | Icel&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<link rel="alternate" href="/atom.xml" title="Icel's Blog" type="application/atom+xml">
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Icel&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Icel&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">关于贝壳的一次爬虫经历</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Icel</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 2, 2020&nbsp;&nbsp;0:39:16</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/爬虫/">爬虫</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>这次爬虫过程相比较 p 站和 bing 来说，新加入了数据库部分，也遇到了一些新的问题，因此我认为有必要进行记录。</p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>爬取贝壳上所有城市的所有的项目信息，并保存到 mongoDB 中</p>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ol>
+<li>分析 <a href="https://gz.fang.ke.com/loupan" target="_blank" rel="noopener">https://gz.fang.ke.com/loupan</a> 内数据的获取方式</li>
+<li>尝试获取各城市贝壳网的链接地址</li>
+<li>将数据保存到数据库(mongoDB)内</li>
+</ol>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><h3 id="分析链接"><a href="#分析链接" class="headerlink" title="分析链接"></a>分析链接</h3><p>由分析可知，贝壳网在获取全部楼盘列表时，会请求 <a href="https://gz.fang.ke.com/loupan/pg2/?_t=1" target="_blank" rel="noopener">https://gz.fang.ke.com/loupan/pg2/?_t=1</a> 这个网址，返回 json 数据。其中 pg2 指的是全部楼盘列表的当前显示页。因此只需要遍历所有的页就可以获得所有楼盘的基础数据</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"errno"</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">"error"</span>: <span class="string">""</span>,</span><br><span class="line">  <span class="attr">"data"</span>: &#123;</span><br><span class="line">    <span class="attr">"no_more_data"</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">"fb_query_id"</span>: <span class="string">"320001615984238592"</span>,</span><br><span class="line">    <span class="attr">"list"</span>: [↔],</span><br><span class="line">    <span class="attr">"switch_city"</span>: [↔],</span><br><span class="line">    <span class="attr">"total"</span>: <span class="string">"1095"</span>,</span><br><span class="line">    <span class="attr">"no_result_resblocks"</span>: [↔],</span><br><span class="line">    <span class="attr">"few_result_resblocks"</span>: [↔],</span><br><span class="line">    "selected": &#123;↔&#125;,</span><br><span class="line">    "hot_resblock": [↔]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，整个城市的楼盘数据是用 total 记录的。其中，每个楼盘的数据都保存在 list 中</p>
+<details>
+<summary>楼盘数据（例子）</summary>
+<div style="white-space:pre;">
+{
+    "item_type": "0",
+    "item_type_desc": "",
+    "pid": "13607",
+    "id": "2113349626850729",
+    "city_id": "440100",
+    "city_name": "广州市",
+    "cover_pic": "https://ke-image.ljcdn.com/hdic-resblock/aee7be68-aad6-400c-bd4c-2093aee91a45.jpg",
+    "min_frame_area": "40",
+    "max_frame_area": "115",
+    "district_name": "增城",
+    "district": "增城",
+    "district_id": "23008643",
+    "bizcircle_id": "1100000717",
+    "bizcircle_name": "朱村",
+    "build_id": "2113349626850729",
+    "process_status": "3",
+    "resblock_frame_area": "建面 40-115㎡",
+    "resblock_frame_area_range": "40-115㎡",
+    "resblock_frame_area_desc": "建面",
+    "decoration": "精装修",
+    "longitude": "113.685415",
+    "latitude": "23.282883",
+    "frame_rooms_desc": "1/2/3居",
+    "title": "恒展江山时代花园",
+    "resblock_name": "恒展江山时代花园",
+    "resblock_alias": "江山时代花园",
+    "address": "朱村大道西88号",
+    "store_addr": "朱村大道西88号",
+    "avg_unit_price": "25000",
+    "average_price": "21000",
+    "address_remark": "朱村大道西88号",
+    "project_name": "hzjssdhyaaudj",
+    "special_tags": [],
+    "special": {
+        "lianjia_special": [],
+        "lianjia_special_comm": "",
+        "developer_special": [],
+        "developer_special_comm": ""
+    },
+    "frame_rooms": [],
+    "converged_rooms": [
+        {
+            "bedroom_count": "2",
+            "area_range": "76㎡"
+        },
+        {
+            "bedroom_count": "3",
+            "area_range": "85-114㎡"
+        }
+    ],
+    "tags": ["小户型", "入户花园", "地铁沿线", "近主干道"],
+    "project_tags": [
+        {
+            "id": "14",
+            "desc": "小户型",
+            "color": ""
+        },
+        {
+            "id": "32",
+            "desc": "入户花园",
+            "color": ""
+        },
+        {
+            "id": "1",
+            "desc": "地铁沿线",
+            "color": ""
+        },
+        {
+            "id": "43",
+            "desc": "近主干道",
+            "color": ""
+        }
+    ],
+    "house_type": "住宅",
+    "house_type_value": "107500000003",
+    "sale_status": "在售",
+    "has_evaluate": "0",
+    "has_vr_aerial": "0",
+    "has_vr_house": "1",
+    "has_short_video": "0",
+    "open_date": "2018-07-07",
+    "has_virtual_view": "1",
+    "lowest_total_price": "1600000",
+    "show_price": "21000",
+    "show_price_unit": "元/平",
+    "show_price_desc": "均价",
+    "show_price_confirm_time": "53天",
+    "price_confirm_time": "2020-04-09 19:52:36",
+    "status": "2",
+    "subway_distance": "距21号线凤岗站0米",
+    "is_cooperation": "2",
+    "evaluate_status": "0",
+    "show_price_info": "均价21000元/平",
+    "brand_id": "101",
+    "preload_detail_image": [
+        {
+            "id": "img_3476209",
+            "image_id": "3476209",
+            "type_id": "101900000004",
+            "type_name": "效果图",
+            "image_url": "https://ke-image.ljcdn.com/hdic-resblock/aee7be68-aad6-400c-bd4c-2093aee91a45.jpg",
+            "title": "",
+            "desc": "",
+            "extend": null,
+            "vr_info": null,
+            "video_info": null,
+            "image_list_blurry_url": "https://image1.ljcdn.com/hdic-resblock/aee7be68-aad6-400c-bd4c-2093aee91a45.jpg!m_fill,w_60,l_fbk,q_90",
+            "image_size_url": "https://image1.ljcdn.com/hdic-resblock/aee7be68-aad6-400c-bd4c-2093aee91a45.jpg!m_fill,w_750,h_562,l_fbk",
+            "image_list_size_url": "https://image1.ljcdn.com/hdic-resblock/aee7be68-aad6-400c-bd4c-2093aee91a45.jpg!m_fill,w_1440,l_fbk"
+        }
+    ],
+    "reference_avg_price": "21000",
+    "reference_avg_price_unit": "元/㎡",
+    "reference_avg_price_desc": "参考均价",
+    "reference_total_price": "0",
+    "reference_total_price_unit": "万/套",
+    "reference_total_price_desc": "总价",
+    "new_sale_tags": [],
+    "is_followed": "0",
+    "is_support_online_sale": "0",
+    "is_undertake": "0",
+    "properright": "",
+    "developer_company": ["广州恒展房地产开发有限公司"],
+    "property_company": [],
+    "live_tag": "0",
+    "prod": "1",
+    "sale_status_color": "5F94FF",
+    "house_type_color": "FB9252",
+    "total_price_start": "150",
+    "total_price_start_unit": "万/套",
+    "avg_price_start": "18859",
+    "avg_price_start_unit": "元/平",
+    "on_time": "2018-12-24 10:07:46",
+    "project_desc": "邻铁900米，刚需小户型",
+    "has_car_activity": "1",
+    "is_new_sale": "0",
+    "first_tags": [
+        {
+            "desc": "VR售楼部",
+            "color": "F66B65",
+            "text_color": "FFFFFF"
+        },
+        {
+            "desc": "免费专车",
+            "color": "FF984C",
+            "text_color": "FFFFFF"
+        }
+    ],
+    "m_first_tags": [
+        {
+            "desc": "免费专车",
+            "color": "FF984C",
+            "text_color": "FFFFFF"
+        }
+    ],
+    "fb_expo_id": "320001616001015809",
+    "strategy_info": "{\"fb_query_id\":\"320001615984238592\",\"fb_expo_id\":\"320001616001015809\",\"fb_item_location\":\"1\",\"fb_service_id\":\"1012810001\",\"fb_ab_test_flag\":\"[\\\"ab-group: [
+    ab-test-exp-476-group-1,
+    ab-test-exp-477-group-3,
+    ab-test-exp-480-group-2,
+    ab-test-exp-481-group-4,
+    ab-test-exp-482-group-4,
+    ab-test-exp-484-group-5
+    ]\\\"]\",\"fb_item_id\":\"13607\"}",
+    "recommend_log_info": "",
+    "recommend_reason": {
+        "type": "4",
+        "name": "楼盘亮点",
+        "details": "邻铁900米，刚需小户型"
+    },
+    "url": "/loupan/p_hzjssdhyaaudj/"
+}
+</div>
+</details>
+
+<p>因此，一座城市全部的楼盘情况就都可以拿下来了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取总页数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_total_project_num</span><span class="params">(self, city_url)</span>:</span></span><br><span class="line">    req = requests.get(<span class="string">f'<span class="subst">&#123;city_url&#125;</span>/pg1/?_t=1'</span>)</span><br><span class="line">    <span class="keyword">return</span> req.json()[<span class="string">'data'</span>][<span class="string">'total'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 多线程下载每一页的项目信息(同时下载，并没有间隔一定时间)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_project_data</span><span class="params">(self,</span></span></span><br><span class="line"><span class="function"><span class="params">                    city_url,</span></span></span><br><span class="line"><span class="function"><span class="params">                    city_collection,</span></span></span><br><span class="line"><span class="function"><span class="params">                    start_page=<span class="number">1</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                    end_page=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> end_page:</span><br><span class="line">        end_page = ceil(int(self.get_total_project_num(city_url)) / <span class="number">10</span>)</span><br><span class="line">    <span class="keyword">for</span> page <span class="keyword">in</span> range(start_page, end_page + <span class="number">1</span>):</span><br><span class="line">        self.get_data_from_page(city_url, page, city_collection)</span><br><span class="line">        print(<span class="string">f'下载了第<span class="subst">&#123;page&#125;</span>页的数据'</span>)</span><br><span class="line">        <span class="comment"># 这里原本想用异步的，因为贝壳限制同一ip短时间内的请求次数。如果次数过多会直接跳入验证人机页面。因此改用延时处理</span></span><br><span class="line">        sleep(randint(<span class="number">300</span>, <span class="number">700</span>) / <span class="number">100</span>)</span><br><span class="line">        <span class="comment"># Thread(target=self.get_data_from_page, args=(city_url, page, city_collection)).start()</span></span><br><span class="line">    print(<span class="string">'全部下载完了'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理每一页拿到的项目信息</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_data_from_page</span><span class="params">(self, city_url, page, city_collection)</span>:</span></span><br><span class="line">    req = requests.get(<span class="string">f'<span class="subst">&#123;city_url&#125;</span>/pg<span class="subst">&#123;str(page)&#125;</span>/?_t=1'</span>)</span><br><span class="line">    project_list = req.json()[<span class="string">'data'</span>][<span class="string">'list'</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取城市链接地址"><a href="#获取城市链接地址" class="headerlink" title="获取城市链接地址"></a>获取城市链接地址</h3><p>因为贝壳单页面上存在选择城市的链接组，因此直接请求指定网站，并用正则表达式直接获取所有城市的链接</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 制作一个城市链接地址的迭代器，需要用try-except和StopIteration来防止输出结束后的报错</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_city_url</span><span class="params">(self)</span>:</span></span><br><span class="line">    url = <span class="string">'https://hz.fang.ke.com/loupan'</span></span><br><span class="line">    req = requests.get(url)</span><br><span class="line">    city_url_regexp = re.compile(</span><br><span class="line">        <span class="string">'(?!&lt;a href=")\/\/.&#123;1,15&#125;\.fang\.ke\.com\/loupan'</span>)</span><br><span class="line">    city_url_array = list(set(re.findall(city_url_regexp, req.text)))</span><br><span class="line">    city_url_length = len(city_url_array)</span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> i &lt; city_url_length:</span><br><span class="line">        <span class="keyword">yield</span> <span class="string">'https:'</span> + city_url_array[i]</span><br><span class="line">        i = i + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="保存数据"><a href="#保存数据" class="headerlink" title="保存数据"></a>保存数据</h3><p>因为 json 数据中存在数组，因此直接选用 MongoDB 这样依赖 json 格式储存数据的数据库。每个 collection 的名字用连接里城市的缩写来命名。另外我将需要请求的数据直接做成数据的样子，比较好管理，不过我觉得应该直接保存成 json 文件，而不是做成 return 的样子会更好</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pymongo <span class="keyword">import</span> MongoClient</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="comment"># get_project_kws文件的keywords函数就是返回一个json文件，里面保存着文件名和对应的贝壳json中的名字</span></span><br><span class="line"><span class="keyword">from</span> keywords <span class="keyword">import</span> get_project_kws</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">mongodb</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        client = MongoClient(<span class="string">'mongodb://127.0.0.1:27017'</span>)</span><br><span class="line">        self.db = client.beike</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 生成指定城市名的collection</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create_col</span><span class="params">(self, city_url)</span>:</span></span><br><span class="line">        city_short = re.split(<span class="string">'\.'</span>, city_url[<span class="number">8</span>:])[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> city_short <span class="keyword">in</span> self.db.list_collection_names():</span><br><span class="line">            <span class="keyword">return</span> self.db.get_collection(city_short)</span><br><span class="line">            <span class="comment"># self.db.drop_collection(city_short)</span></span><br><span class="line">        city = self.db.create_collection(city_short)</span><br><span class="line">        <span class="keyword">return</span> city</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 插入数据 -- project_list指的是解析网站回馈的json后拿到的项目列表</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">insert_data</span><span class="params">(self, collection, project_list)</span>:</span></span><br><span class="line">        kw_array = get_project_kws()[<span class="string">'keywords'</span>]</span><br><span class="line">        <span class="keyword">for</span> project <span class="keyword">in</span> project_list:</span><br><span class="line">            obj = &#123;&#125;</span><br><span class="line">            <span class="keyword">for</span> kw <span class="keyword">in</span> kw_array:</span><br><span class="line">                obj[kw[<span class="string">'kw'</span>]] = project[kw[<span class="string">'data_kw'</span>]]</span><br><span class="line">            collection.insert_one(obj)</span><br></pre></td></tr></table></figure>
+
+<p>最终将各部分拼接起来就可以了。</p>
+<h2 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h2><p>实际上本次的爬虫存在很多问题</p>
+<ol>
+<li><p>爬取数据很慢。虽然 sleep 设置了 0.3 秒到 0.7 秒，但每一页数据都花费了大概 1 秒左右的时间，说明程序的效率并不是很高，只是满足了功能而已</p>
+</li>
+<li><p>本次爬虫使我深刻认识到动态 ip 的重要性。如果能够多线程同步进行爬取，速率可以大大提升</p>
+</li>
+<li><p>本次爬虫还有一个比较致命的点。贝壳里所有城市链接里所有数据全爬下来，意味着数据量很大。如果中途出现网络连接故障，或者我想要中途停止，后期再继续爬的话，在本程序中完全没有设计这样的保护机制，会让前面爬取的数据都付诸东流。本次爬虫从晚上开始，一直爬到第二天早上，甚至上班路上还在爬，快到单位才爬完 TAT。因此，保护机制很重要。如果依靠 scrapy 去爬取的话，scrapy 内部有保护机制，就可以有效避免这样的情况。</p>
+</li>
+<li><p>虽然一个城市的所有楼盘都能获取到，但实际上请求 json 所返回的数据与实际网站上给出的数据的顺序是不一致的，这说明贝壳网在显示数据前，很可能预先获得用户所在地址后再定向推荐的。而这个也是本次程序所没有考虑到的点。</p>
+</li>
+</ol>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/python/"># python</a>
+                    
+                        <a href="/tags/爬虫/"># 爬虫</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2020/06/01/python的time模块/">python的time模块</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Icel | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

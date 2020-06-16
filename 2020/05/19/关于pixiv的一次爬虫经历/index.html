@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>关于pixiv的一次爬虫经历 | Icel&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<link rel="alternate" href="/atom.xml" title="Icel's Blog" type="application/atom+xml">
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Icel&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Icel&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">关于pixiv的一次爬虫经历</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Icel</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">May 19, 2020&nbsp;&nbsp;23:58:36</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/爬虫/">爬虫</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <blockquote>
+<p>今天对 pixiv 插画网站进行了爬虫尝试，下面是对这次爬虫的记录</p>
+</blockquote>
+<h4 id="网站情况"><a href="#网站情况" class="headerlink" title="网站情况"></a>网站情况</h4><ol>
+<li>基础网址为: <a href="https://www.pixiv.com" target="_blank" rel="noopener">https://www.pixiv.com</a></li>
+<li>对于图片的请求，需要添加请求头 <code>referer:https://www.pixiv.net/artworks/图片号码</code> 例 <code>headers = {&#39;referer&#39;: &#39;https://www.pixiv.net/artworks/81618055&#39;}</code></li>
+<li>如果有查看更多，需要请求 <code>https://www.pixiv.net/ajax/illust/图片号码/pages?lang=zh</code> 拿到里面包含的图片地址</li>
+<li>如果需要下多天的排行榜图片，需要请求 <code>https://www.pixiv.net/ranking.php?mode=daily&amp;date=20200517</code></li>
+<li>可以搜索每天排名前 500 的图片，需要修改参数 p 的值，范围 1 到 10 <code>https://www.pixiv.net/ranking.php?mode=daily&amp;p=10&amp;format=json</code></li>
+<li>搜索图片可以用 <code>https://www.pixiv.net/ajax/search/artworks/%E3%82%BF%E3%82%A4%E3%83%84?word=%E3%82%BF%E3%82%A4%E3%83%84&amp;order=date_d&amp;mode=all&amp;p=1&amp;s_mode=s_tag&amp;type=all&amp;lang=zh</code>这个链接</li>
+<li>搜索图片的话，一次请求 60 条</li>
+</ol>
+<p>以下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> ceil</span><br><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 只用来下载一张图片，这样可以实现并行操作</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DownloadImg</span><span class="params">(Thread)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, img_link)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self._img_link = img_link</span><br><span class="line">        self._image_addr = <span class="string">'C:/Users/Administrator/Desktop/jiepai/pixiv/'</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 按列表下载图片</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        img_date = re.findall(</span><br><span class="line">            <span class="string">'[0-9]&#123;4&#125;/[0-9]&#123;2&#125;/[0-9]&#123;2&#125;/[0-9]&#123;2&#125;/[0-9]&#123;2&#125;/[0-9]&#123;2&#125;'</span>,</span><br><span class="line">            self._img_link)[<span class="number">0</span>]</span><br><span class="line">        img_name = re.findall(<span class="string">'[0-9]&#123;8&#125;'</span>, self._img_link)[<span class="number">0</span>]</span><br><span class="line">        file_addr = self._image_addr + img_name + <span class="string">'.jpg'</span></span><br><span class="line">        large_img_link = <span class="string">f'https://i.pximg.net/img-master/img/<span class="subst">&#123;img_date&#125;</span>/<span class="subst">&#123;img_name&#125;</span>_p0_master1200.jpg'</span></span><br><span class="line">        <span class="keyword">if</span> path.exists(file_addr):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        referer = <span class="string">f'https://www.pixiv.net/artworks/<span class="subst">&#123;img_name&#125;</span>'</span></span><br><span class="line">        req = requests.get(large_img_link, headers=&#123;<span class="string">'referer'</span>: referer&#125;)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            fs = open(file_addr, <span class="string">'wb'</span>)</span><br><span class="line">            fs.write(req.content)</span><br><span class="line">        <span class="keyword">except</span> IOError <span class="keyword">as</span> e:</span><br><span class="line">            print(e)</span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            fs.close()</span><br><span class="line">            print(<span class="string">f'<span class="subst">&#123;img_name&#125;</span>.jpg 下载完成'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pixiv</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, before_days=<span class="number">0</span>, page=<span class="number">1</span>, ranking_mode=<span class="string">'daily'</span>, lang=<span class="string">'zh'</span>)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self._before_days = before_days</span><br><span class="line">        self._page = page</span><br><span class="line">        self._ranking_addr = <span class="string">'https://www.pixiv.net/ranking.php'</span></span><br><span class="line">        self._ranking_mode = ranking_mode</span><br><span class="line">        self._lang = lang</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 搜索图片，返回一个包含图片数据的列表（每一页60条）end_page如果等于0，意味着返回所有的图片，否则返回指定页数的图片</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search_image</span><span class="params">(self, keyword, end_page=<span class="number">0</span>)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> end_page == <span class="number">0</span>:</span><br><span class="line">            <span class="comment"># 这里通过请求指定网站，获取总页数</span></span><br><span class="line">            get_total_req = requests.get(</span><br><span class="line">                <span class="string">f'https://www.pixiv.net/ajax/search/artworks/<span class="subst">&#123;keyword&#125;</span>?word=<span class="subst">&#123;keyword&#125;</span>&amp;order=date_d&amp;mode=all&amp;p=1&amp;s_mode=s_tag&amp;type=all&amp;lang=zh'</span></span><br><span class="line">            )</span><br><span class="line">            total_image = json.loads(</span><br><span class="line">                get_total_req.text)[<span class="string">'body'</span>][<span class="string">'illustManga'</span>][<span class="string">'total'</span>]</span><br><span class="line">            end_page = ceil(int(total_image) // <span class="number">60</span>)</span><br><span class="line">        total_image_array = []</span><br><span class="line">        <span class="keyword">for</span> page <span class="keyword">in</span> range(<span class="number">1</span>, end_page + <span class="number">1</span>):</span><br><span class="line">            search_link = <span class="string">f'https://www.pixiv.net/ajax/search/artworks/'</span> + keyword</span><br><span class="line">            params = &#123;</span><br><span class="line">                <span class="string">'word'</span>: keyword,</span><br><span class="line">                <span class="string">'order'</span>: <span class="string">'date_d'</span>,</span><br><span class="line">                <span class="string">'mode'</span>: <span class="string">'all'</span>,</span><br><span class="line">                <span class="string">'p'</span>: page,</span><br><span class="line">                <span class="string">'s_mode'</span>: <span class="string">'s_tag'</span>,</span><br><span class="line">                <span class="string">'type'</span>: <span class="string">'all'</span>,</span><br><span class="line">                <span class="string">'lang'</span>: <span class="string">'zh'</span></span><br><span class="line">            &#125;</span><br><span class="line">            req = requests.get(search_link, params=params)</span><br><span class="line">            images = json.loads(req.text)[<span class="string">'body'</span>][<span class="string">'illustManga'</span>][<span class="string">'data'</span>]</span><br><span class="line">            <span class="keyword">for</span> image <span class="keyword">in</span> images:</span><br><span class="line">                total_image_array.append(image[<span class="string">'url'</span>])</span><br><span class="line">        <span class="keyword">return</span> total_image_array</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 返回排名页全部图片的列表</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ranking_image</span><span class="params">(self)</span>:</span></span><br><span class="line">        ranking_date = self.get_time()</span><br><span class="line">        ranking_image_attr = []</span><br><span class="line">        <span class="keyword">for</span> date <span class="keyword">in</span> range(int(ranking_date[<span class="number">0</span>]), int(ranking_date[<span class="number">1</span>]) + <span class="number">1</span>):</span><br><span class="line">            ranking_image_attr += self.ranking_page_image(date)</span><br><span class="line">        <span class="keyword">return</span> ranking_image_attr</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 用于下载列表中的图片</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">download_image</span><span class="params">(self, image_array)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> image_link <span class="keyword">in</span> image_array:</span><br><span class="line">            DownloadImg(image_link).start()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 返回排名页一页图片的链接列表</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ranking_page_image</span><span class="params">(self, date)</span>:</span></span><br><span class="line">        image_addr = []  <span class="comment"># 图片的链接地址都储存在这个数组中</span></span><br><span class="line">        <span class="keyword">for</span> page <span class="keyword">in</span> range(<span class="number">1</span>, self._page + <span class="number">1</span>):</span><br><span class="line">            params = &#123;</span><br><span class="line">                <span class="string">'mode'</span>: self._ranking_mode,</span><br><span class="line">                <span class="string">'date'</span>: str(date),</span><br><span class="line">                <span class="string">'p'</span>: page,</span><br><span class="line">                <span class="string">'format'</span>: <span class="string">'json'</span></span><br><span class="line">            &#125;</span><br><span class="line">            req = requests.get(self._ranking_addr, params=params)</span><br><span class="line">            image_list = json.loads(req.text)[<span class="string">'contents'</span>]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> image_element <span class="keyword">in</span> image_list:</span><br><span class="line">                image_addr.append(image_element[<span class="string">'url'</span>])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> image_addr</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 获取日期 [20200518, 20200518] 或 [20200517, 20200518] 后一个数永远是当天，前一个数根据日期差值计算得到的</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_time</span><span class="params">(self)</span>:</span></span><br><span class="line">        tm = time.time()</span><br><span class="line">        <span class="comment"># 5月19日只有5月18日的排行榜</span></span><br><span class="line">        today = int(time.strftime(<span class="string">"%Y%m%d"</span>, time.gmtime(tm))) - <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> self._before_days == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> [today, today]</span><br><span class="line">        before = today - self._before_days</span><br><span class="line">        <span class="keyword">return</span> [before, today]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># p1 = Pixiv(2, 2)</span></span><br><span class="line">    <span class="comment"># img_array = p1.ranking_image()</span></span><br><span class="line">    <span class="comment"># p1.download_image(img_array)</span></span><br><span class="line"></span><br><span class="line">    p2 = Pixiv()</span><br><span class="line">    p2.search_image(<span class="string">'タイツ'</span>, <span class="number">1</span>)</span><br><span class="line">    p2.download_image(img_array)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<h4 id="遇到的难点"><a href="#遇到的难点" class="headerlink" title="遇到的难点"></a>遇到的难点</h4><ol>
+<li>p 站有墙</li>
+<li>高清图需要登录</li>
+<li>套图只能拿到封面那一张图</li>
+<li>搜索功能，高清图这些很有可能会依靠 cookie 来扩大搜索范围</li>
+<li>需要手动在指定目录新建文件夹</li>
+</ol>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/python/"># python</a>
+                    
+                        <a href="/tags/爬虫/"># 爬虫</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/06/01/python的time模块/">python的time模块</a>
+            
+            
+            <a class="next" rel="next" href="/2020/05/12/一次爬虫的记录/">一次爬虫的记录</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Icel | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

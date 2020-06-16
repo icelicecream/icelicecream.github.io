@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>FCC算法题8 | Icel&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<link rel="alternate" href="/atom.xml" title="Icel's Blog" type="application/atom+xml">
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Icel&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Icel&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">FCC算法题8</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Icel</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">November 5, 2019&nbsp;&nbsp;8:20:02</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/FCC算法题/">FCC算法题</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h3><blockquote>
+<p>冒泡排序，将是你遇到的几个排序算法中的第一个。给定一个未排序的数组，我们期望能够返回的是一个有序的数组。我们将采用不同的几种方式来实现这个功能，并且了解到不同方式的优劣之处，找到最适合的方式来实现不同的应用环境。尽管大多数的现代编程语言在内部构建了这种排序方式并提供了相应的 API，但仍然很有必要了解一些基本的方法并且知道他们是如何完成实现的。<br><br>现在我们来了解一下冒泡排序。冒泡排序方法从未排序的数组开头开始，并且将未排序的数组元素往后挪移，然后迭代数组，直到所有的数组元素都完全排序后才停止。这种方式是，通过比较相邻的元素然后置换元素完成排序。这种方式就是便利循环数组，直到整个数组没有元素交换为止，这样就完成了冒泡排序。这个算法的名字由来是因为越大的元素会经由交换慢慢“浮”到数列的顶端（升序或降序排列），就如同碳酸饮料中二氧化碳的气泡最终会上浮到顶端一样，故名“冒泡排序”。<br><br>这种方式通过多次迭代数组来完成操作，不管是平均还是最坏的情况，都是具有二次时间复杂度。尽管这个方式简单，但是在实际应用中，大多数情况下不切实际的：时间复杂度过高。<br><br>说明：创建一个函数并命名为 bubbleSort，输入参数是一个数组，且数组元素全部都是整数类型，然后按照从最小到最大的顺序返回整个数组。<br><br>注意：<br>我们将在后台调用这些函数，测试数组在编辑器中也是被注释掉了的。尝试记录输入 array 来确认你的冒泡排序算法是否正确。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bubbleSort</span>(<span class="params">array</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; array.length; i++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">let</span> j = i + <span class="number">1</span>; j &lt; array.length; j++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (array[i] &gt; array[j]) &#123;</span><br><span class="line">				<span class="comment">// 交换两个值，要求两个数值都是数字类型整数</span></span><br><span class="line">				array[i] ^= array[j]</span><br><span class="line">				array[j] ^= array[i]</span><br><span class="line">				array[i] ^= array[j]</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> array</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试数组：</span></span><br><span class="line"><span class="comment">// [1, 4, 2, 8, 345, 123, 43, 32, 5643, 63, 123, 43, 2, 55, 1, 234, 92]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h3><blockquote>
+<p>现在我们开始实现选择排序。选择排序是通过选择列表中最小值来与列表中的第一个值进行对比交换，然后从第二位置开始逐一对比，选择剩下的列表中最小值与第二个元素交换位置。然后循环遍历列表并交换元素，直到列表最后一个元素，此时的列表就完成了排序。选择排序在所有的情况下都具有二次时间复杂度。<br><br>说明：创建一个函数并命名为 selectionSort，输入参数是一个数组，且数组元素全部都是整数类型，然后按照从最小到最大的顺序返回整个数组。<br><br>注意：<br>我们将在后台调用这些函数，测试数组在编辑器中也是被注释掉了的。尝试记录输入 array 来确认你的冒泡排序算法是否正确。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">selectionSort</span>(<span class="params">array</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (array.length === <span class="number">1</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> array</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">const</span> [first, ...otherArr] = array</span><br><span class="line">	<span class="keyword">const</span> [minNum, minPos] = minNumAndPos(otherArr)</span><br><span class="line">	<span class="keyword">if</span> (first &lt; minNum) &#123;</span><br><span class="line">		<span class="keyword">return</span> [first].concat(selectionSort(otherArr))</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		otherArr[minPos] = first</span><br><span class="line">		<span class="keyword">return</span> [minNum].concat(selectionSort(otherArr))</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">minNumAndPos</span>(<span class="params">array</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">const</span> minNum = <span class="built_in">Math</span>.min(...array)</span><br><span class="line">	<span class="keyword">const</span> minPos = array.indexOf(minNum, array)</span><br><span class="line">	<span class="keyword">return</span> [minNum, minPos]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h3><blockquote>
+<p>现在我们开始研究插入排序。这个方法通过在列表的开头见一个排序的数组来实现整个排序，它以第一个元素开始排序数组，然后检查对比下一个元素，并将其向后交换到排序的书中，直到它处在排序的位置。循环迭代整个列表，将新产生的元素交换到排序部分，直到整个列表处于排序状态。该算法在平均和最坏的情况下具有二次时间复杂度。<br><br>说明：创建一个函数并命名为 insertionSort，输入参数是一个数组，且数组元素全部都是整数类型，然后按照从最小到最大的顺序返回整个数组。<br><br>注意：<br>我们将在后台调用这些函数，测试数组在编辑器中也是被注释掉了的。尝试记录输入 array 来确认你的冒泡排序算法是否正确。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">selectionSort</span>(<span class="params">array</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">let</span> resArr = [array[<span class="number">0</span>]]</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; array.length; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (array[i] &lt;= resArr[<span class="number">0</span>]) &#123;</span><br><span class="line">			resArr.unshift(array[i])</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (array[i] &gt;= resArr[resArr.length - <span class="number">1</span>]) &#123;</span><br><span class="line">			resArr.push(array[i])</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; resArr.length; j++) &#123;</span><br><span class="line">				<span class="keyword">const</span> before = resArr[j]</span><br><span class="line">				<span class="keyword">const</span> after = resArr[j + <span class="number">1</span>]</span><br><span class="line">				<span class="comment">// 寻找数字在新数组中的位置</span></span><br><span class="line">				<span class="keyword">if</span> (array[i] === after || (array[i] &gt; before &amp;&amp; array[i] &lt; after)) &#123;</span><br><span class="line">					resArr = [...resArr.slice(<span class="number">0</span>, j + <span class="number">1</span>), array[i], ...resArr.slice(j + <span class="number">1</span>)]</span><br><span class="line">					<span class="keyword">break</span></span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> resArr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><blockquote>
+<p>现在我们开始讨论快速排序。快速排序是一种高效的递归分治方法来排序数组。在这个方法中，需要在原始数组中选择一个枢轴值，然后将数组划分为两个子数组，其值大于或者小于枢轴值，然后我们将递归调用两个子数组上的快速排序算法的结果来配合使用，直到空数组或者单个元素的数组的情况，然后返回结果。递归调用的展开结果将返回的是排序后的数组。<br><br>快速排序是一种非常有效的排序方式，平均时间复杂度为 O(nlog(n))，同时它也是相对比较容易实现的方式。这些特性使得快速排序成为了一种流行而有用的排序方式。<br><br>说明：创建一个函数并命名为 quickSort，输入参数是一个数组，且数组元素全部都是整数类型，然后按照从最小到最大的顺序返回整个数组。虽然选择一个枢轴值很重要，但任何一个枢轴都能满足要求，为了以防万一，我嘛一般选择第一个或者最后一个元素来作为数轴值。<br><br>注意：<br>我们将在后台调用这些函数，测试数组在编辑器中也是被注释掉了的。尝试记录输入 array 来确认你的冒泡排序算法是否正确。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">quickSort</span>(<span class="params">array</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (array.length &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> array</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">const</span> middlePos = ~~(array.length / <span class="number">2</span>) <span class="comment">// 向下取整</span></span><br><span class="line">	<span class="keyword">const</span> middleNum = array.splice(middlePos, <span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">	<span class="keyword">const</span> left = []</span><br><span class="line">	<span class="keyword">const</span> right = []</span><br><span class="line">	array.map(<span class="function"><span class="params">val</span> =&gt;</span> &#123;</span><br><span class="line">		val &lt; middleNum ? left.push(val) : right.push(val)</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">return</span> [...quickSort(left), middleNum, ...quickSort(right)]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/FCC算法题/"># FCC算法题</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/11/06/FCC算法题9/">FCC算法题9</a>
+            
+            
+            <a class="next" rel="next" href="/2019/11/04/FCC算法题7/">FCC算法题7</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Icel | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

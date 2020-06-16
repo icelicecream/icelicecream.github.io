@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>python的time模块 | Icel&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<link rel="alternate" href="/atom.xml" title="Icel's Blog" type="application/atom+xml">
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Icel&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Icel&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">python的time模块</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Icel</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 1, 2020&nbsp;&nbsp;23:57:10</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/模块/">模块</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="time-模块－－时间获取和转换"><a href="#time-模块－－时间获取和转换" class="headerlink" title="time 模块－－时间获取和转换"></a>time 模块－－时间获取和转换</h1><blockquote>
+<p>time 模块提供各种时间相关的功能</p>
+</blockquote>
+<p>与时间相关的模块有：time,datetime,calendar</p>
+<h2 id="必要说明："><a href="#必要说明：" class="headerlink" title="必要说明："></a>必要说明：</h2><p>这个模块的功能不是适用于所有的平台</p>
+<p>这个模块中定义的大部分函数是调用 C 平台上的同名函数实现</p>
+<p>一些术语和约定的解释：</p>
+<ol>
+<li><p>时间戳(timestamp)的方式：通常来说，时间戳表示的是从 1970 年 1 月１日开始按秒计算的偏移量(time.gmtime(0))此模块中的函数无法处理 1970 纪元年以前的时间或太遥远的未来(处理极限取决于 C 函数库，对于 32 位系统而言，是 2038 年)</p>
+</li>
+<li><p>UTC(Coordinated Universal Time,世界协调时)也叫格林威治天文时间，是世界标准时间．在我国为 UTC+8</p>
+</li>
+<li><p>DST(Daylight Saving Time)即夏令时</p>
+</li>
+<li><p>一些实时函数的计算精度可能不同</p>
+</li>
+</ol>
+<h2 id="时间元祖-time-struct-time"><a href="#时间元祖-time-struct-time" class="headerlink" title="时间元祖(time.struct_time)"></a>时间元祖(time.struct_time)</h2><p>gmtime(),localtime()和 strptime()以时间元祖(struct_time)的形式返回</p>
+<table>
+<tr>
+<th>索引值(index)</th> 
+<th>属性(Attribute)</th> 
+<th>值(Values)</th> 
+</tr><tr>
+<td>0</td>
+<td>tm_year(年)</td>
+<td>(例如:2015)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>tm_mon(月)</td>
+<td>1-12</td>
+</tr>
+<tr>
+<td>2</td>
+<td>tm_mday(日)</td>
+<td>1-31</td>
+</tr>
+<tr>
+<td>3</td>
+<td>tm_hour(时)</td>
+<td>0-23</td>
+</tr>
+<tr>
+<td>4</td>
+<td>tm_min(分)</td>
+<td>0-59</td>
+</tr>
+<tr>
+<td>5</td>
+<td>tm_sec(秒)</td>
+<td>0-61(60 代表闰秒,61 是基于历史原因保留)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>tm_wday(星期几)</td>
+<td>0-6(0表示星期一)</td>
+</tr>
+<tr>
+<td>7</td>
+<td>tm_yday(一年中的第几天)</td>
+<td>1-366</td>
+</tr>
+<tr>
+<td>8</td>
+<td>tm_isdst(是否为夏令时)</td>
+<td>0,1,-1(-1 代表夏令时)</td>
+</tr>
+</table>
+
+<h2 id="time-altzone"><a href="#time-altzone" class="headerlink" title="time.altzone"></a>time.altzone</h2><p>返回格林威治西部的夏令时地区的偏移秒数，如果该地区在格林威治东部会返回负值(如西欧，包括英国)，对夏令时启用地区才能使用</p>
+<h2 id="time-asctime-t"><a href="#time-asctime-t" class="headerlink" title="time.asctime([t])"></a>time.asctime([t])</h2><p>接受时间元组并返回一个可读的形式”Tue May 30 17:17:30 2017”(2017 年 5 月 30 日周二 17 时 17 分 30 秒)的 24 个字符的字符串</p>
+<h2 id="time-clock"><a href="#time-clock" class="headerlink" title="time.clock()"></a>time.clock()</h2><p>用以浮点数计算的秒数返回当前的 CPU 时间，用来衡量不同程序的耗时，比 time.time()更有用<br>python3.3 以后不被推荐使用，该方法依赖操作系统，建议使用 per_counter(返回系统运行时间)或 process_time(返回进程运行时间)代替</p>
+<h2 id="time-ctime-secs"><a href="#time-ctime-secs" class="headerlink" title="time.ctime([secs])"></a>time.ctime([secs])</h2><p>作用相当于 asctime(localtime(secs)),未给参数相当于 asctime()</p>
+<h2 id="time-gmtime-secs"><a href="#time-gmtime-secs" class="headerlink" title="time.gmtime([secs])"></a>time.gmtime([secs])</h2><p>接收时间辍(1970 纪元年后经过的浮点秒数)并返回格林威治天文时间下的时间元组 t(t.tm_isdst 始终为０)</p>
+<h2 id="time-daylight"><a href="#time-daylight" class="headerlink" title="time.daylight"></a>time.daylight</h2><p>如果夏令时被定义，则该值为非零</p>
+<h2 id="time-localtime-secs"><a href="#time-localtime-secs" class="headerlink" title="time.localtime([secs])"></a>time.localtime([secs])</h2><p>接收时间辍(1970 纪元年后经过的浮点秒数)并返回当地时间下的时间元组 t(t.tm_isdst 可取为０或１，取决于当地当时是不是夏令时)</p>
+<h2 id="time-mktime-t"><a href="#time-mktime-t" class="headerlink" title="time.mktime(t)"></a>time.mktime(t)</h2><p>接受时间元组并返回时间辍(1970 纪元年后经过的浮点秒数)</p>
+<h2 id="time-perf-counter"><a href="#time-perf-counter" class="headerlink" title="time.perf_counter()"></a>time.perf_counter()</h2><p>返回计时器的精准时间(系统的运行时间)，包含整个系统的睡眠时间．由于返回值的基准点是未定义的，所以，只有连续调用的结果之间的差才是有效的</p>
+<h2 id="time-process-time"><a href="#time-process-time" class="headerlink" title="time.process_time()"></a>time.process_time()</h2><p>返回当前进程执行 CPU 的时间总和，不包含睡眠时间．由于返回值的基准点是未定义的，所以只有连续调用的结果之间的差才是有效的</p>
+<h2 id="time-sleep-secs"><a href="#time-sleep-secs" class="headerlink" title="time.sleep(secs)"></a>time.sleep(secs)</h2><p>推迟调用线程的运行，secs 的单位是秒</p>
+<h2 id="time-strftime-format-t"><a href="#time-strftime-format-t" class="headerlink" title="time.strftime(format[,t])"></a>time.strftime(format[,t])</h2><p>把一个代表时间的元组或者 struct_time(如由 time.localtime()和 time.gmtime()返回)转化为格式化的时间字符串．如果 t 未指定，将传入 time.localtime()，如果元组中任命一个元素越界，将会抛出 ValueError 异常</p>
+<details>
+<summary>format 格式如下：</summary>
+
+<p>%a 本地(local)简化星期名称</p>
+<p>%A 本地完整星期名称</p>
+<p>%b 本地简化月份名称</p>
+<p>%B 本地完整月份名称</p>
+<p>%c 本地相应的日期和时间表示</p>
+<p>%d 一个月中的第几天(01-31)</p>
+<p>%H 一天中的第几个小时(24 小时制，00-23)</p>
+<p>%l 一天中的第几个小时(12 小时制，01-12)</p>
+<p>%j 一年中的第几天(01-366)</p>
+<p>%m 月份(01-12)</p>
+<p>%M 分钟数(00-59)</p>
+<p>%p 本地 am 或者 pm 的相应符</p>
+<p>%S 秒(01-61)</p>
+<p>%U 一年中的星期数(00-53,星期天是一个星期的开始,第一个星期天之前的所有天数都放在第０周)</p>
+<p>%w 一个星期中的第几天(0-6,0 是星期天)</p>
+<p>%W 和%U 基本相同，不同的是%W 以星期一为一个星期的开始</p>
+<p>%x 本地相应日期</p>
+<p>%X 本地相应时间</p>
+<p>%y 去掉世纪的年份(00-99)</p>
+<p>%Y 完整的年份</p>
+<p>%z 用+HHMM 或者-HHMM 表示距离格林威治的时区偏移(H 代表十进制的小时数，M 代表十进制的分钟数)</p>
+<p>%Z 时区的名字(如果不存在为空字符)</p>
+<p>%% %号本身</p>
+<p>%p 只有与%I 配合使用才有效果</p>
+<p>当使用 strptime()函数时，只有当在这年中的周数和天数被确定的时候%U 和%W 才会被计算</p>
+</details>
+
+<h2 id="time-strptime-string-format"><a href="#time-strptime-string-format" class="headerlink" title="time.strptime(string[,format])"></a>time.strptime(string[,format])</h2><p>把一个格式化时间字符串转化为 struct_time,实际上它和 strftie()是逆操作</p>
+<h2 id="time-time"><a href="#time-time" class="headerlink" title="time.time()"></a>time.time()</h2><p>返回当前时间的时间戳(1970 元年后的浮点秒数)</p>
+<h2 id="time-timezone"><a href="#time-timezone" class="headerlink" title="time.timezone()"></a>time.timezone()</h2><p>是当地时区(未启动夏令时)距离格林威治的偏移秒数(美洲＞０，欧洲大部分，亚洲，非洲&lt;＝０)</p>
+<h2 id="time-tzname"><a href="#time-tzname" class="headerlink" title="time.tzname"></a>time.tzname</h2><p>包含两个字符串的元组，第一是当地夏令时区的名称，第二是当地的 DST 时区的名称<br>下面是一些经常会用到的例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># @Time: 2019/9/18 11:14</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># @Author:renpingsheng</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> **future** <span class="keyword">import</span> division</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_cutten_timestr</span><span class="params">(flag=True)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">获取当前时间字符串</span></span><br><span class="line"><span class="string">@return:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line"><span class="keyword">return</span> datetime.datetime.now().strftime(<span class="string">'%Y-%m-%d %H:%M:%S'</span>)</span><br><span class="line"><span class="keyword">return</span> datetime.datetime.now().strftime(<span class="string">'%Y-%m-%d'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_timestr_to_timestamp</span><span class="params">(time_str, flag=True)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">把时间字符串转换为时间戳格式</span></span><br><span class="line"><span class="string">:param time_str: 时间字符串,格式为：2019-01-01 12:12:12 或 2019-01-01</span></span><br><span class="line"><span class="string">:param flag: 标志位，决定输入时间字符串的格式</span></span><br><span class="line"><span class="string">:return: 时间戳格式</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">struct_time = time.strptime(time_str, <span class="string">"%Y-%m-%d %H:%M:%S"</span>) <span class="comment"># 2019-01-01 12:12:12</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">struct_time = time.strptime(time_str, <span class="string">"%Y-%m-%d"</span>) <span class="comment"># 2019-01-01</span></span><br><span class="line"><span class="keyword">return</span> time.mktime(struct_time)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_month_to_timestamp</span><span class="params">(month_str, flag=True)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">把月份字符串转化为时间戳</span></span><br><span class="line"><span class="string">:param month_str: 月份，例如：2019-01 或者 2019.01</span></span><br><span class="line"><span class="string">:param flag: 标志位，控制输入月份字符串的格式</span></span><br><span class="line"><span class="string">:return:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">struct_time = time.strptime(month_str, <span class="string">"%Y-%m"</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">struct_time = time.strptime(month_str, <span class="string">"%Y.%m"</span>)</span><br><span class="line"><span class="keyword">return</span> time.mktime(struct_time)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_timestamp_to_timestr</span><span class="params">(time_stamp, flag=True)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">把时间戳转换为时间字符串</span></span><br><span class="line"><span class="string">:param time_stamp: 时间戳</span></span><br><span class="line"><span class="string">:param flag: 标志位，可以指定输出时间字符串的格式</span></span><br><span class="line"><span class="string">:return: 时间字符串,格式为：2019-01-01 12:12:12 或 2019-01-01</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">localtime = time.localtime(time_stamp)</span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">time_str = time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>, localtime)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">time_str = time.strftime(<span class="string">"%Y-%m-%d"</span>, localtime)</span><br><span class="line"><span class="keyword">return</span> time_str</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_day_list</span><span class="params">(start_timestamp, end_timestamp, flag=True)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">传入开始时间戳和结束时间戳，获取时间段内的日期列表</span></span><br><span class="line"><span class="string">:param start_timestamp: 开始时间戳</span></span><br><span class="line"><span class="string">:param end_timestamp: 结束时间戳</span></span><br><span class="line"><span class="string">:param flag: 标志位</span></span><br><span class="line"><span class="string">:return: 日期列表</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">tmp = range(int(start_timestamp), int(end_timestamp), <span class="number">3600</span> \* <span class="number">24</span>)</span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">tmp_range = [&#123;<span class="string">"day_str"</span>: parse_timestamp_to_timestr(i, flag=<span class="literal">False</span>)&#125; <span class="keyword">for</span> i <span class="keyword">in</span> tmp]</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">tmp_range = [parse_timestamp_to_timestr(i, flag=<span class="literal">False</span>) <span class="keyword">for</span> i <span class="keyword">in</span> tmp]</span><br><span class="line"><span class="keyword">return</span> tmp_range</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">day</span>*<span class="title">range</span><span class="params">(interval_day)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">获取指定天内的时间字符串的列表</span></span><br><span class="line"><span class="string">:return:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">c_time = (int(time.time() / (<span class="number">24</span> * <span class="number">3600</span>)) + <span class="number">1</span>) _ <span class="number">24</span> _ <span class="number">3600</span></span><br><span class="line">day*range_str = c_time - <span class="number">24</span> * <span class="number">3600</span> \* interval_day</span><br><span class="line"></span><br><span class="line">    day_list = [&#123;<span class="string">"day_str"</span>: parse_timestamp_to_timestr(t, flag=<span class="literal">False</span>)&#125; <span class="keyword">for</span> t <span class="keyword">in</span> range(day_range_str, c_time, <span class="number">3600</span> * <span class="number">24</span>)]</span><br><span class="line">    <span class="keyword">return</span> day_list</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">covert</span>*<span class="title">time</span><span class="params">(time_str)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">把时间段转换为秒数</span></span><br><span class="line"><span class="string">:param time_str:</span></span><br><span class="line"><span class="string">:return:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">if</span> time_str.endswith(<span class="string">"h"</span>):</span><br><span class="line">stamp = float(time_str.strip(<span class="string">"h"</span>)) * <span class="number">3600</span></span><br><span class="line"><span class="keyword">elif</span> time*str.endswith(<span class="string">"m"</span>):</span><br><span class="line">stamp = float(time_str.strip(<span class="string">"m"</span>)) * <span class="number">60</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">stamp = float(time_str)</span><br><span class="line"><span class="keyword">return</span> stamp</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_timestr_to_datetime</span><span class="params">(timestr, flag=<span class="number">1</span>)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">把时间字符串转化为 datetime</span></span><br><span class="line"><span class="string">:param timestr: 时间字符串，例如：2019-01-01 12:12:12 或者 2019.01.01 12:12:12</span></span><br><span class="line"><span class="string">:param flag: 标志位，控制输入时间字符串的格式</span></span><br><span class="line"><span class="string">:return:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">if</span> flag == <span class="number">1</span>:</span><br><span class="line">tmp_datetime = datetime.datetime.strptime(timestr, <span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line"><span class="keyword">elif</span> flag == <span class="number">2</span>:</span><br><span class="line">tmp_datetime = datetime.datetime.strptime(timestr, <span class="string">"%Y.%m.%d %H:%M:%S"</span>)</span><br><span class="line"><span class="keyword">elif</span> flag == <span class="number">3</span>:</span><br><span class="line">tmp_datetime = datetime.datetime.strptime(timestr, <span class="string">"%Y-%m-%d"</span>)</span><br><span class="line"><span class="keyword">elif</span> flag == <span class="number">4</span>:</span><br><span class="line">tmp_datetime = datetime.datetime.strptime(timestr, <span class="string">"%Y-%m-%d %H:%M"</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">tmp_datetime = datetime.datetime.strptime(timestr, <span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line"><span class="keyword">return</span> tmp_datetime</span><br><span class="line"></span><br><span class="line"><span class="comment">################################################</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_format_timestr</span><span class="params">(format_timestr)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">将格式字符串转换为时间戳</span></span><br><span class="line"><span class="string">:param format_timestr: 格式字符串,格式： "Sat Mar 28 22:24:24 2016"</span></span><br><span class="line"><span class="string">:return:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">tmp_timestamp = time.mktime(time.strptime(format_timestr, <span class="string">"%a %b %d %H:%M:%S %Y"</span>))</span><br><span class="line"><span class="keyword">return</span> tmp_timestamp</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_datetime_to_string</span><span class="params">(datetime_str, flag=True)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">把 datetime 时间转化成时间字符串</span></span><br><span class="line"><span class="string">:param datetime_str: datetime 生成的时间，例子：datetime.datetime.now()</span></span><br><span class="line"><span class="string">或者： datetime.datetime.now() - datetime.timedelta(hours=1) # 一个小时之前</span></span><br><span class="line"><span class="string">或者： datetime.datetime.now() - datetime.timedelta(days=1) # 一天之前</span></span><br><span class="line"><span class="string">:return:</span></span><br><span class="line"><span class="string">"""</span> <span class="comment"># 将日期转化为字符串 datetime =&gt; string # 在数据库中定义字段信息时为：models.DateTimeField(auto_now_add=True) # 查询数据库之后，使用此方法把查询到的时间转换成可用的时间字符串 # when_insert\_\_range=(an_hour_time, now_time) # an_hour_time 和 now_time 都是 datetime 时间字符串，查询两个 datetime 时间字符串之间的数据</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line"><span class="keyword">return</span> datetime_str.strftime(<span class="string">'%Y-%m-%d %H:%M:%S'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line"><span class="keyword">return</span> datetime_str.strftime(<span class="string">'%Y-%m-%d'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_datetime_to_timestamp</span><span class="params">(datetime_str)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">把 datetime 转化成时间戳</span></span><br><span class="line"><span class="string">@param datetime_str: datetime 时间，比如：datetime.datetime.now()</span></span><br><span class="line"><span class="string">@return: 时间戳，比如：1565663994.0</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">return</span> time.mktime(datetime_str.timetuple())</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_timestamp_to_datetime</span><span class="params">(timestamp, flag=True)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">把时间戳转化为 datetime 时间</span></span><br><span class="line"><span class="string">@param timestamp: 时间戳，比如：1553361411</span></span><br><span class="line"><span class="string">@param flag: 标志位，决定转化成 datetime 的时间</span></span><br><span class="line"><span class="string">@return:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line"><span class="keyword">return</span> datetime.datetime.fromtimestamp(timestamp) <span class="comment"># 东八区的 datetime 时间</span></span><br><span class="line"><span class="keyword">return</span> datetime.datetime.utcfromtimestamp(timestamp) <span class="comment"># 正常的 UTC 时间</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_dur_time</span><span class="params">(d1, d2)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">获取两个 datetime 时间 间隔的日期数(天数，小时数和秒数)</span></span><br><span class="line"><span class="string">:param d1: 开始时间</span></span><br><span class="line"><span class="string">:param d2: 结束时间</span></span><br><span class="line"><span class="string">:return:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">dur_str = <span class="string">""</span></span><br><span class="line">dur_day = (d2 - d1).days</span><br><span class="line">dur_second = (d2 - d1).seconds</span><br><span class="line"><span class="keyword">if</span> dur_day &gt; <span class="number">0</span>:</span><br><span class="line">dur_str += <span class="string">"%s 天"</span> % str(dur_day)</span><br><span class="line"><span class="keyword">if</span> dur_second - <span class="number">3600</span> &gt; <span class="number">0</span>:</span><br><span class="line">dur_hour = dur_second // <span class="number">3600</span></span><br><span class="line">dur_str += <span class="string">"%s 小时"</span> % str(dur_hour)</span><br><span class="line"><span class="keyword">if</span> (dur_second % <span class="number">3600</span>) &gt; <span class="number">60</span>:</span><br><span class="line">dur_minute = (dur_second % <span class="number">3600</span>) // <span class="number">60</span></span><br><span class="line">dur_str += <span class="string">"%s 分钟"</span> % str(dur_minute)</span><br><span class="line">dur_str += <span class="string">"%s 秒"</span> % str(dur_second % <span class="number">60</span>)</span><br><span class="line"><span class="keyword">return</span> dur_str</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_month_start</span><span class="params">(datetime_str)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">datetime_str 可以是：datetime.date.today() ,也可以是：datetime.datetime.now()</span></span><br><span class="line"><span class="string">传入 datetime 时间，获取 datetime 时间当月第一天</span></span><br><span class="line"><span class="string">返回传入的 datetime 时间的第一天的时间字符串</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">month_start = datetime.datetime(datetime_str.year, datetime_str.month, <span class="number">1</span>)</span><br><span class="line"><span class="keyword">return</span> month_start.strftime(<span class="string">'%Y-%m-%d'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_month_end</span><span class="params">(datetime_str)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">datetime_str 可以是：datetime.date.today() ,也可以是：datetime.datetime.now()</span></span><br><span class="line"><span class="string">传入 datetime 时间，获取 datetime 时间当月最后一天</span></span><br><span class="line"><span class="string">返回传入的 datetime 时间的最后一天的时间字符串</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">if</span> data_date.month == <span class="number">12</span>:</span><br><span class="line">month_end = datetime.datetime(datetime_str.year, <span class="number">12</span>, <span class="number">31</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">month_end = datetime.datetime(datetime_str.year, datetime_str.month + <span class="number">1</span>, <span class="number">1</span>) - datetime.timedelta(days=<span class="number">1</span>)</span><br><span class="line"><span class="keyword">return</span> month_end.strftime(<span class="string">'%Y-%m-%d'</span>)</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/python/"># python</a>
+                    
+                        <a href="/tags/模块/"># 模块</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/06/02/关于贝壳的一次爬虫经历/">关于贝壳的一次爬虫经历</a>
+            
+            
+            <a class="next" rel="next" href="/2020/05/19/关于pixiv的一次爬虫经历/">关于pixiv的一次爬虫经历</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Icel | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

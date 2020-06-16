@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>某次面试面试题总结1 | Icel&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<link rel="alternate" href="/atom.xml" title="Icel's Blog" type="application/atom+xml">
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Icel&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Icel&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">某次面试面试题总结1</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Icel</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 18, 2019&nbsp;&nbsp;22:47:05</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/习题分析/">习题分析</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>这是一次面试的笔试题，记录一下我个人的答案，只是我不能说我写的百分之百正确，如果有人发现错误，麻烦用邮件通知我一下，谢谢。</p>
+<h3 id="清除浮动的方法"><a href="#清除浮动的方法" class="headerlink" title="清除浮动的方法"></a>清除浮动的方法</h3><p>答：</p>
+<ul>
+<li><p>为什么要清除浮动：当子元素设置浮动，父元素没有高度的时候，会造成页面布局混乱。</p>
+</li>
+<li><p>如何清除浮动：</p>
+<ol>
+<li>在要清除浮动的元素后面添加标签，什么都不写，然后在 style 中该空白标签样式中添加<code>clear: both</code></li>
+<li>给父元素设置<code>overflow: hidden</code></li>
+</ol>
+<p><em>以上两种方法都有弊端，所以只是了解而已，要回答就回答第 3，第 4 种</em></p>
+<ol start="3">
+<li>使用伪元素清除浮动，将写好伪元素的类添加到想要清除浮动的元素上</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.clearfix</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">	<span class="attribute">display</span>: block;</span><br><span class="line">	<span class="attribute">clear</span>: both;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">0px</span>;</span><br><span class="line">	<span class="attribute">line-height</span>: <span class="number">0px</span>;</span><br><span class="line">	<span class="attribute">visibility</span>: hidden;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.clearfix</span> &#123;</span><br><span class="line">	<span class="attribute">zoom</span>: <span class="number">1</span>; <span class="comment">/*兼容ie*/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.clearfix</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">	<span class="attribute">display</span>: table;</span><br><span class="line">	<span class="attribute">clear</span>: both;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.clearfix</span> &#123;</span><br><span class="line">	*zoom: 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>使用双伪元素清除浮动，将写好的类添加到想要清除浮动的元素上(与上面方法性质相同)</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.clearfix</span><span class="selector-pseudo">:before</span>,</span><br><span class="line"><span class="selector-class">.clearfix</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">	<span class="attribute">display</span>: table;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.clearfix</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">clear</span>: both;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.clearfix</span> &#123;</span><br><span class="line">	<span class="attribute">zoom</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="px，em，rem-的区别"><a href="#px，em，rem-的区别" class="headerlink" title="px，em，rem 的区别"></a>px，em，rem 的区别</h3><p>答：</p>
+<ul>
+<li><code>px</code>是基于像素的大小设定的”绝对尺寸”，缺点是不能适应浏览器的缩放，不适合响应式网站。</li>
+<li><code>em</code>是基于当前对象内文本的字体大小，可以较好的适应设备屏幕尺寸的变化，但进行元素设置的时候都要了解父元素文本的字体大小和当前元素的字体大小，比较麻烦。</li>
+<li><code>rem</code>只基于<code>&lt;html&gt;</code>中设置的字体大小，因此只需要确定一个字体大小设置。</li>
+</ul>
+<h3 id="div-前添加红色’-‘，用-css-实现"><a href="#div-前添加红色’-‘，用-css-实现" class="headerlink" title="div 前添加红色’*‘，用 css 实现"></a>div 前添加红色’*‘，用 css 实现</h3><p>答：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span><span class="selector-pseudo">:before</span> &#123;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">'*'</span>;</span><br><span class="line">	<span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="0-1-0-2-0-3，写出结果，并说明为什么"><a href="#0-1-0-2-0-3，写出结果，并说明为什么" class="headerlink" title="0.1+0.2===0.3，写出结果，并说明为什么"></a><code>0.1+0.2===0.3</code>，写出结果，并说明为什么</h3><p>答：由于 js 处理浮点数的方法问题，导致<code>0.1+0.2</code>的实际结果应该为 0.3 后面跟着很多 0 和一个数字。<code>因此0.1+0.2===0.3</code>的结果为<code>false</code></p>
+<h3 id="跨域的方法-至少三种"><a href="#跨域的方法-至少三种" class="headerlink" title="跨域的方法(至少三种)"></a>跨域的方法(至少三种)</h3><p>答：这个说实话，平时都是用现成的组件跨域，比如 jQuery 的<code>$.ajax</code>，还有 axios。实际问到这个问题，我印象中的方法确实很少，而且掌握的也不是很牢。在百度中搜了一下，看到了写出 9 中跨域方法的大神 orz。我在下一篇博客中直接搬运他的博客来记录一下详细内容，这里先放个那篇博客的<a href="https://www.cnblogs.com/sdcs/p/8484905.html" target="_blank" rel="noopener">链接地址</a>。</p>
+<h3 id="箭头函数和-promise-的优点"><a href="#箭头函数和-promise-的优点" class="headerlink" title="箭头函数和 promise 的优点"></a>箭头函数和 promise 的优点</h3><p>答：</p>
+<ul>
+<li>箭头函数优点：</li>
+</ul>
+<ol>
+<li>让代码拥有更简洁的语法。</li>
+<li>箭头函数不会改变<code>this</code>本来的绑定</li>
+</ol>
+<ul>
+<li><code>promise</code>优点：</li>
+</ul>
+<ol>
+<li>能够避免嵌套过深。(原本设计出来就是为了避免异步回调地狱)</li>
+<li>能够将数据获取跟逻辑分开，加强代码可维护性。(虽然是这么说，感觉基于<code>promise-then</code>设计出的<code>async-await</code>比他更好……)</li>
+</ol>
+<h3 id="说明pop，push，shift，unshift的用途"><a href="#说明pop，push，shift，unshift的用途" class="headerlink" title="说明pop，push，shift，unshift的用途"></a>说明<code>pop</code>，<code>push</code>，<code>shift</code>，<code>unshift</code>的用途</h3><p>答：</p>
+<ul>
+<li>pop: 删除数组中最后一个元素，返回被删除的元素</li>
+<li>push: 将元素添加到数组结尾，会修改原数组，返回修改后数组的长度</li>
+<li>shift: 删除数组中第一个元素，返回被删除的元素</li>
+<li>unshift: 将元素添加到数组的开头，会修改原数组，返回修改后数组的长度</li>
+</ul>
+<h3 id="emit-的作用"><a href="#emit-的作用" class="headerlink" title="$emit 的作用"></a>$emit 的作用</h3><p>答：</p>
+<p><code>$emit</code>可以被用来创建自定义事件，常用来从子组件向父组件传递数据。<code>vm.$emit(event,[...args])</code>中<code>event</code>指的是自定义的事件名，<code>[...args]</code>指的是利用事件所传递的数据。父组件可以在子组件上添加<code>@事件名=&quot;处理方法&quot;</code>的方式从子组件接收并处理数据。</p>
+<h3 id="1-2-3-4-5-6-7-8-变成-1-2-3-4-5-6-7-8-，使用递归方法"><a href="#1-2-3-4-5-6-7-8-变成-1-2-3-4-5-6-7-8-，使用递归方法" class="headerlink" title="[1, 2, [3, 4], [5, 6, [7, 8]]]变成[1, 2, 3, 4, 5, 6, 7, 8]，使用递归方法"></a><code>[1, 2, [3, 4], [5, 6, [7, 8]]]</code>变成<code>[1, 2, 3, 4, 5, 6, 7, 8]</code>，使用递归方法</h3><p>答：实际上可以通过 toString 的方法直接把前面的数组变成后面的数组，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">6</span>, [<span class="number">7</span>, <span class="number">8</span>]]]</span><br><span class="line"><span class="keyword">const</span> resArr = arr.toString().split(<span class="string">','</span>)</span><br></pre></td></tr></table></figure>
+
+<p>不过本题要求使用递归，那么下面代码就是使用递归来实现功能：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> resArr = []</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readArr</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">	arr.map(<span class="function"><span class="params">val</span> =&gt;</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (val <span class="keyword">instanceof</span> <span class="built_in">Array</span>) &#123;</span><br><span class="line">			readArr(val)</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			resArr.push(val)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">return</span> resArr</span><br><span class="line">&#125;</span><br><span class="line">readArr([<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">6</span>, [<span class="number">7</span>, <span class="number">8</span>]]])</span><br></pre></td></tr></table></figure>
+
+<h3 id="假设有个门，10-秒钟没有人经过就会调用-closeDoor，当有人通过的时候会重新计时，用代码大概实现这样的功能"><a href="#假设有个门，10-秒钟没有人经过就会调用-closeDoor，当有人通过的时候会重新计时，用代码大概实现这样的功能" class="headerlink" title="假设有个门，10 秒钟没有人经过就会调用 closeDoor，当有人通过的时候会重新计时，用代码大概实现这样的功能"></a>假设有个门，10 秒钟没有人经过就会调用 closeDoor，当有人通过的时候会重新计时，用代码大概实现这样的功能</h3><p>答：这道题他们公司的面试官告诉我主要考的是防抖函数怎么写，所以思路应该是围绕定时器的触发和重置展开，大体上应该是下面这样的代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">delayClose</span>(<span class="params">fn, wait</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">let</span> timeout = <span class="literal">null</span></span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (timeout !== <span class="literal">null</span>) &#123;</span><br><span class="line">			clearTimeout(timeout)</span><br><span class="line">		&#125;</span><br><span class="line">		timeout = setTimeout(fn, wait)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">door.addEventListener(<span class="string">'person'</span>, delayClose(closeDoor, <span class="number">10000</span>))</span><br></pre></td></tr></table></figure>
+
+<p>不过我是没太想明白最后一句这么写对不对，而且我觉得不用回调函数的方式实际上就可以实现了，只是面试官说我错的很严重……如果有人知道准确答案的话麻烦用邮件告诉我一声，谢谢了。</p>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/面试总结/"># 面试总结</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/10/21/前端解决跨域的9种方法/">前端解决跨域的9种方法</a>
+            
+            
+            <a class="next" rel="next" href="/2019/10/17/4道事件循环题以及分析/">4道事件循环题以及分析</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Icel | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

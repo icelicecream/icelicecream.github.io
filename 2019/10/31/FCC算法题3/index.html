@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>FCC算法题3 | Icel&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<link rel="alternate" href="/atom.xml" title="Icel's Blog" type="application/atom+xml">
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Icel&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Icel&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">FCC算法题3</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Icel</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 31, 2019&nbsp;&nbsp;16:26:20</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/FCC算法题/">FCC算法题</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="搜索和替换"><a href="#搜索和替换" class="headerlink" title="搜索和替换"></a>搜索和替换</h3><blockquote>
+<p>在这道题目中，我们需要写一个字符串的搜索与替换函数，它的返回值为完成替换后的新字符串。<br> <br>这个函数接收的第一个参数为待替换的句子。第二个参数为句中需要被替换的单词。第三个参数为替换后的单词。<br><br> 注意：你需要保留被替换单词首字母的大小写格式。即如果传入的第二个参数为 “Book”，第三个参数为 “dog”，那么替换后的结果应为 “Dog”</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myReplace</span>(<span class="params">str, before, after</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">let</span> tempStr = after</span><br><span class="line">	<span class="keyword">const</span> reg = <span class="regexp">/[A-Z][a-z]*/</span></span><br><span class="line">	<span class="keyword">if</span> (reg.test(before)) &#123;</span><br><span class="line">		tempStr = tempStr.substr(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + tempStr.substr(<span class="number">1</span>)</span><br><span class="line">		<span class="built_in">console</span>.log(tempStr)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> str.replace(before, tempStr)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">myReplace(<span class="string">'A quick brown fox jumped over the lazy dog'</span>, <span class="string">'jumped'</span>, <span class="string">'leaped'</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="DNA-配对"><a href="#DNA-配对" class="headerlink" title="DNA 配对"></a>DNA 配对</h3><blockquote>
+<p>在这道题目中，我们需要写一个函数，为 DNA 中的碱基配对。这个函数只接收一个表示碱基的字符串为参数，最后返回完成配对的二维数组。<br><br>碱基对 由一对碱基组成。碱基有四种，分别为 A（腺嘌呤）、T（胸腺嘧啶）、G（鸟嘌呤）和 C（胞嘧啶）。配对原则是：A 与 T 配对，C 与 G 配对。我们需要根据这个原则对传入的所有碱基进行配对。<br><br>对于每个传入的碱基，我们应采用数组的形式展示配对结果。其中，传入的碱基需要作为数组的第一个元素出现。最终返回的数组中应当包含参数中每一个碱基的配对结果。<br><br>比如，传入的参数是 GCG，那么函数的返回值应为 [[“G”, “C”], [“C”,”G”],[“G”, “C”]]</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pairElement</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">const</span> res = []</span><br><span class="line">	str.split(<span class="string">''</span>).map(<span class="function"><span class="params">val</span> =&gt;</span> &#123;</span><br><span class="line">		<span class="keyword">switch</span> (val) &#123;</span><br><span class="line">			<span class="keyword">case</span> <span class="string">'A'</span>:</span><br><span class="line">				res.push([<span class="string">'A'</span>, <span class="string">'T'</span>])</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">			<span class="keyword">case</span> <span class="string">'T'</span>:</span><br><span class="line">				res.push([<span class="string">'T'</span>, <span class="string">'A'</span>])</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">			<span class="keyword">case</span> <span class="string">'G'</span>:</span><br><span class="line">				res.push([<span class="string">'G'</span>, <span class="string">'C'</span>])</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">			<span class="keyword">case</span> <span class="string">'C'</span>:</span><br><span class="line">				res.push([<span class="string">'C'</span>, <span class="string">'G'</span>])</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">			<span class="keyword">default</span>:</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">pairElement(<span class="string">'GCG'</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="丢失的字母"><a href="#丢失的字母" class="headerlink" title="丢失的字母"></a>丢失的字母</h3><blockquote>
+<p>在这道题目中，我们需要写一个函数，找到传入的字符串里缺失的字母并返回它。<br><br> 判断缺失的依据是字母顺序，比如 abcdfg 中缺失了 e。而 abcdef 中就没有字母缺失，此时我们需要返回 undefined。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fearNotLetter</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">const</span> strArr = str.split(<span class="string">''</span>)</span><br><span class="line">	<span class="keyword">const</span> start = strArr[<span class="number">0</span>].charCodeAt()</span><br><span class="line">	<span class="keyword">const</span> end = strArr[strArr.length - <span class="number">1</span>].charCodeAt()</span><br><span class="line">	<span class="keyword">if</span> (end - start + <span class="number">1</span> !== strArr.length) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; strArr.length; i++) &#123;</span><br><span class="line">			<span class="keyword">const</span> pos = strArr[i].charCodeAt()</span><br><span class="line">			<span class="keyword">if</span> (pos !== start + i) &#123;</span><br><span class="line">				<span class="comment">// 说明缺失字母</span></span><br><span class="line">				<span class="built_in">console</span>.log(<span class="built_in">String</span>.fromCharCode(start + i))</span><br><span class="line">				<span class="keyword">return</span> <span class="built_in">String</span>.fromCharCode(start + i)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">undefined</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fearNotLetter(<span class="string">'abce'</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="集合排序"><a href="#集合排序" class="headerlink" title="集合排序"></a>集合排序</h3><blockquote>
+<p>在这道题目中，我们需要写一个函数，它接收两个或多个数组为参数。我们需要对这些数组中所有元素进行去除重复元素的处理，并以数组的形式返回去重结果。<br><br>需要注意的是，结果数组中的元素顺序必须与其传入的顺序保持一致。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">uniteUnique</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">let</span> arr = [].concat(...arguments)</span><br><span class="line">	<span class="keyword">return</span> [...new <span class="built_in">Set</span>(arr)]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">uniteUnique([<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>], [<span class="number">5</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>], [<span class="number">2</span>, <span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="转换-HTML-实体"><a href="#转换-HTML-实体" class="headerlink" title="转换 HTML 实体"></a>转换 HTML 实体</h3><blockquote>
+<p>在这道题目中，我们需要写一个转换 HTML entity 的函数。需要转换的 HTML entity 有&amp;、&lt;、&gt;、”（双引号）和’（单引号）。转换的规则你可以在<a href="https://dev.w3.org/html5/html-author/charref" target="_blank" rel="noopener">W3C 官网</a>找到。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">convertHTML</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">const</span> obj = &#123;</span><br><span class="line">		<span class="string">'&amp;'</span>: <span class="string">'&amp;amp;'</span>,</span><br><span class="line">		<span class="string">'&lt;'</span>: <span class="string">'&amp;lt;'</span>,</span><br><span class="line">		<span class="string">'&gt;'</span>: <span class="string">'&amp;gt;'</span>,</span><br><span class="line">		<span class="string">'"'</span>: <span class="string">'&amp;quot;'</span>,</span><br><span class="line">		<span class="string">"'"</span>: <span class="string">'&amp;apos;'</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">const</span> strArr = [...str]</span><br><span class="line">	strArr.forEach(<span class="function">(<span class="params">val, index, arr</span>) =&gt;</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (obj.hasOwnProperty(val)) &#123;</span><br><span class="line">			arr[index] = obj[val]</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">return</span> strArr.join(<span class="string">''</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">convertHTML(<span class="string">'Dolce &amp; Gabbana'</span>)</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/FCC算法题/"># FCC算法题</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/11/01/FCC算法题4/">FCC算法题4</a>
+            
+            
+            <a class="next" rel="next" href="/2019/10/30/FCC算法题2/">FCC算法题2</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Icel | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

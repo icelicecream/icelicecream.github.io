@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>4道事件循环题以及分析 | Icel&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<link rel="alternate" href="/atom.xml" title="Icel's Blog" type="application/atom+xml">
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Icel&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Icel&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">4道事件循环题以及分析</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Icel</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 17, 2019&nbsp;&nbsp;21:19:44</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/习题分析/">习题分析</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>事件循环一直是一个比较头疼的话题，但它关系到异步操作的执行顺序，因此就算头疼也是需要掌握的重要知识点。说实在的，目前我认为我并没有完全掌握这部分知识，临阵磨枪可能会稍微想明白点，时间一长又一头雾水了。所以在本文中记录四道题，前三道是从<a href="https://www.jianshu.com/p/9644f13568c0" target="_blank" rel="noopener">一篇博客</a>中截取下来的，最后一道题是我在面试过程中遇到的。当时做这道题的时候想了很久，可惜并没有成为我进入那家公司的踏板，不过题还是很有分析意义的。</p>
+<p>知识点还是直接看那篇博客吧，一是搬运过来不太好，二是我不清楚那篇博客能否让我彻底理解事件循环和事件队列。如果可以，以后理解透了再自己写一篇来记录一下我的理解思路吧。</p>
+<p><em>(本文中的习题分析不一定是正确的，只是个人理解，如果有错误的地方麻烦通过邮件的方式通知我，我好学习和改正，谢谢。</em></p>
+<blockquote>
+<p>代码我是在浏览器中测试的，所以测试结果中有<code>undefined</code>，我认为<code>undefined</code>保留有益于理解运行数据，所以并没有删除，特此声明。</p>
+</blockquote>
+<p>废话不多说，上题：</p>
+<h3 id="第一题："><a href="#第一题：" class="headerlink" title="第一题："></a>第一题：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">async1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'async1 start'</span>)</span><br><span class="line">	<span class="keyword">await</span> async2()</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'async1 end'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">async2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="comment">//async2做出如下更改：</span></span><br><span class="line">	<span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'promise1'</span>)</span><br><span class="line">		resolve()</span><br><span class="line">	&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'promise2'</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'script start'</span>)</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'setTimeout'</span>)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line">async1()</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'promise3'</span>)</span><br><span class="line">	resolve()</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'promise4'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'script end'</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="输出结果："><a href="#输出结果：" class="headerlink" title="输出结果："></a>输出结果：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">script start</span><br><span class="line">async1 start</span><br><span class="line">promise1</span><br><span class="line">promise3</span><br><span class="line">script end</span><br><span class="line">promise2</span><br><span class="line">async1 end</span><br><span class="line">promise4</span><br><span class="line"><span class="literal">undefined</span></span><br><span class="line">setTimeout</span><br></pre></td></tr></table></figure>
+
+<h4 id="题目分析："><a href="#题目分析：" class="headerlink" title="题目分析："></a>题目分析：</h4><p>系统由上到下执行。</p>
+<ol>
+<li>执行到<code>console.log</code>， 输出<code>script start</code>。</li>
+<li>执行定时器，将定时器放到全部代码执行完后执行。(定时器运行机制，是将指定代码移出本轮事件循环，等到下一轮事件循环再检查是否到指定时间。如果到了就执行代码，没到就继续等待)</li>
+<li>执行<code>async1</code>，输出<code>async1 start</code>，执行<code>await async2</code>。</li>
+<li><code>async2</code>中创建<code>Promise</code>对象，<code>Promise</code>对象特点是创建了就立即执行，且无法取消，所以输出<code>promise1</code>。</li>
+<li>关于<code>then</code>的理解我不知道正不正确，我认为代码运行到<code>then</code>的时候会先挂起，等到代码从上到下全运行完一遍后才会回头再运行<code>then</code>的内容。但他跟定时器不一样，定时器是等到所有的代码都运行完，包括<code>then</code>的内容后再运行，所以可以在<code>undefined</code>后看到定时器的输出。<code>undefined</code>像是浏览器的标识，意味着所有的代码都执行结束。这里我用数组来表示队列，<code>[async2-promise-then]</code>。</li>
+<li><code>await</code>后面的 async2 会立即执行，但会阻止代码继续执行<code>console.log(&#39;a1 end&#39;)</code>。<code>await</code>的阻断效果会跟<code>then</code>一样排在相同的队列里，在全代码第一遍运行结束后按照先进先出的原则进行处理。我的理解是 await 需要等到后面的函数执行结束后才会执行，否则轮到队列中的<code>await</code>执行时，它会跳过去执行队列中的下一项。这里用 await 标记在队列中位置，运行到这里表示的是继续运行 await 之后的代码。<code>[async2-promise-then, await-async2]</code>。</li>
+<li>由于<code>async2</code>还未运行结束，<code>async1</code>中的最后一句也无法进行，整体代码继续向下进行。运行到<code>Promise</code>，输出<code>promise3</code>。</li>
+<li>遇到<code>then</code>，扔到之前的队列中：<code>[async2-promise-then, await-async2, promise-then]</code>。</li>
+<li>输出<code>script end</code>，整个代码第一遍运行结束，开始处理队列，从最先添加的代码开始运行，输出<code>promise2</code>。<code>async2</code>运行结束，<code>await-async2</code>可以执行了。</li>
+<li>处理队列第二项，代码从<code>await async2()</code>处继续向下运行，输出<code>async1 end</code>。</li>
+<li>全代码并没有其他与<code>async1</code>运行结果相关联的代码了，开始运行队列中的第三项，输出<code>promise4</code>。</li>
+<li>全代码也没有与<code>Promise</code>运行结果相关的代码了，运行完毕，输出<code>undefined</code>。</li>
+<li>开始处理定时器结果，输出<code>setTimeOut</code>。至此，全部输出完毕。</li>
+</ol>
+<h3 id="第二题："><a href="#第二题：" class="headerlink" title="第二题："></a>第二题：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">async1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'async1 start'</span>)</span><br><span class="line">	<span class="keyword">await</span> async2()</span><br><span class="line">	<span class="comment">//更改如下：</span></span><br><span class="line">	setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'setTimeout1'</span>)</span><br><span class="line">	&#125;, <span class="number">0</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">async2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="comment">//更改如下：</span></span><br><span class="line">	setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'setTimeout2'</span>)</span><br><span class="line">	&#125;, <span class="number">0</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'script start'</span>)</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'setTimeout3'</span>)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line">async1()</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'promise1'</span>)</span><br><span class="line">	resolve()</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'promise2'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'script end'</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="输出结果：-1"><a href="#输出结果：-1" class="headerlink" title="输出结果："></a>输出结果：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">script start</span><br><span class="line">async1 start</span><br><span class="line">promise1</span><br><span class="line">script end</span><br><span class="line">promise2</span><br><span class="line"><span class="literal">undefined</span></span><br><span class="line">setTimeout3</span><br><span class="line">setTimeout2</span><br><span class="line">setTimeout1</span><br></pre></td></tr></table></figure>
+
+<h4 id="题目分析：-1"><a href="#题目分析：-1" class="headerlink" title="题目分析："></a>题目分析：</h4><p>系统由上到下执行。</p>
+<ol>
+<li>运行到<code>console.log</code>，输出<code>script start</code>。</li>
+<li>运行定时器，扔到代码运行结束后运行，这里用数组的方式表示。<code>[timeout3]</code></li>
+<li>运行<code>async1</code>，输出<code>async1 start</code>。等待<code>async2</code>运行结束。</li>
+<li>async2 中定义了一个定时器，扔到代码运行结束后运行。<code>[timeout3, timeout2]</code>。<code>async2</code>内部代码已经全部运行完毕，把<code>await async2</code>扔到队列里。<code>[await-async2]</code></li>
+<li>由于<code>await async2()</code>的存在，后面的定时器没有设置。整体代码继续往下运行，运行到<code>promise</code>，输出<code>promise1</code></li>
+<li>遇到<code>then</code>，扔到单独的队列里去。<code>[await-async2, promise-then]</code>。</li>
+<li>运行<code>console.log</code>，输出<code>script end</code>。整体第一遍运行结束。</li>
+<li>开始运行队列第一项，设置定时器<code>[timeout3, timeout2, timeout1]</code>。</li>
+<li>开始运行队列第二项，输出<code>promise2</code>，队列运行结束，没有其他与运行结果相关连的代码。全部代码运行结束，输出<code>undefined</code>。</li>
+<li>开始处理定时器，按照先进先出原则，按顺序输出<code>setTimeOut3</code>，<code>setTimeOut2</code>，<code>setTimeOut1</code>。至此，全部输出完毕。</li>
+</ol>
+<h3 id="第三题："><a href="#第三题：" class="headerlink" title="第三题："></a>第三题：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">a1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'a1 start'</span>)</span><br><span class="line">	<span class="keyword">await</span> a2()</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'a1 end'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">a2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'a2'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'script start'</span>)</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'setTimeout'</span>)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'promise1'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">a1()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> promise2 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">	resolve(<span class="string">'promise2.then'</span>)</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'promise2'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">promise2.then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">	<span class="built_in">console</span>.log(res)</span><br><span class="line">	<span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'promise3'</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'script end'</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="输出结果：-2"><a href="#输出结果：-2" class="headerlink" title="输出结果："></a>输出结果：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">script start</span><br><span class="line">a1 start</span><br><span class="line">a2</span><br><span class="line">promise2</span><br><span class="line">script end</span><br><span class="line">promise1</span><br><span class="line">a1 end</span><br><span class="line">promise2.then</span><br><span class="line">promise3</span><br><span class="line"><span class="literal">undefined</span></span><br><span class="line">setTimeout</span><br></pre></td></tr></table></figure>
+
+<h4 id="题目分析：-2"><a href="#题目分析：-2" class="headerlink" title="题目分析："></a>题目分析：</h4><p>系统由上到下执行。</p>
+<ol>
+<li>运行<code>console.log</code>，输出<code>script start</code>。</li>
+<li>设置定时器，扔到代码运行结束后运行。<code>[timeout]</code>。</li>
+<li>运行<code>promise</code>，没有结果输出，把<code>then</code>扔到队列里去。<code>[promise-then]</code>。</li>
+<li>运行<code>a1</code>，输出<code>a1 start</code>。运行<code>await a2()</code>，等待<code>a2</code>运行结束。</li>
+<li>运行<code>a2</code>，输出<code>a2</code>。<code>a2</code>运行结束。从这里可以看出，<code>await</code>与<code>promise</code>的<code>then</code>是一样的，都会扔到队列里，等待全部处理结束后再运行。<code>[promise-then, a1-await]</code>。</li>
+<li><code>a1</code>暂时结束，继续向下，运行<code>promise2</code>，这里<code>resolve(&#39;promise2.then&#39;)</code>，是向<code>then</code>传递字符串<code>promise2.then</code>。继续向下，创建了与<code>promise2</code>相关的<code>then</code>。把<code>then</code>扔到队列里后正常运行下面代码即可。<code>[promise-then, a1-await, promise2-then]</code>，输出<code>promise2</code>。</li>
+<li><code>promise2</code>暂时结束，运行<code>console.log</code>，输出<code>script end</code>，整体代码第一遍运行结束。开始处理队列。</li>
+<li>运行队列第一项，输出<code>promise1</code>，没有与结果相关联的，运行结束。</li>
+<li>运行队列第二项，输出<code>a1 end</code>，没有与结果相关联的，运行结束。</li>
+<li>运行队列第三项，输出<code>res</code>，也就是之前<code>resolve</code>中的内容，输出<code>promise2.then</code>。继续向下，运行<code>promise</code>，没有输出，把<code>then</code>扔到队列里。<code>[promise3-then]</code>。</li>
+<li>队列中只剩下刚才扔进去的<code>then</code>了，运行，输出<code>promise3</code>。全部代码运行结束，开始处理定时器。输出<code>setTimeOut</code>。至此，全部输出完毕。</li>
+</ol>
+<h3 id="第四题："><a href="#第四题：" class="headerlink" title="第四题："></a>第四题：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> wait = <span class="keyword">async</span> delay =&gt; <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> setTimeout(res, delay))</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> func2 = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'b'</span>)</span><br><span class="line">	<span class="keyword">await</span> wait(<span class="number">0</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> func1 = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'a'</span>)</span><br><span class="line">	<span class="keyword">await</span> func2()</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'c'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'e'</span>)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line">func1()</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'d'</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="输出结果：-3"><a href="#输出结果：-3" class="headerlink" title="输出结果："></a>输出结果：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a</span><br><span class="line">b</span><br><span class="line">d</span><br><span class="line"><span class="literal">undefined</span></span><br><span class="line">e</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+
+<h5 id="题目分析：-3"><a href="#题目分析：-3" class="headerlink" title="题目分析："></a>题目分析：</h5><p>系统由上到下执行。</p>
+<ol>
+<li>执行到<code>setTimeOut</code>时，将<code>setTimeOut</code>扔到全部代码执行完后执行。<code>[timeout-e]</code></li>
+<li>执行<code>func1</code>，调用<code>func1</code>的方法输出<code>a</code>，输出完后执行<code>await func2()</code>。</li>
+<li>输出 b，执行<code>await wait(0)</code>。</li>
+<li><code>wait</code>内创建<code>Promise</code>对象，对象内部创建定时器。<code>[timeot-e, time-out]</code>。到此<code>wait(0)</code>相当于运行结束，把<code>await wait(0)</code>扔到队列里。<code>[await-wait]</code>。func2 相当于运行结束，把<code>await func2()</code>扔队列里。<code>[await-wait, await-func2]</code>。</li>
+<li><code>func1</code>处理结束，程序向下执行，输出 d。</li>
+<li>由于<code>wait</code>被定时器阻止运行结束，所以队列中的两个<code>await</code>操作都不能执行。代码相当于全部执行完一边，浏览器输出<code>undefined</code>。</li>
+<li>按定时器队列顺序处理定时器，输出 e。</li>
+<li>然后处理<code>Promise</code>中的定时器，<code>wait</code>方法全部运行结束，可以执行队列中的<code>await</code>操作了。<code>await wait(0)</code>后面没有操作，func2 运行结束，可以运行<code>await func2()</code>之后的操作，输出 c。至此，全部输出完毕。</li>
+</ol>
+<p>虽然是将 4 道题全部分析完，但不是特别确定分析的是不是正确的，后期如果发现有需要改的地方，我会更新这篇文章。</p>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/事件循环/"># 事件循环</a>
+                    
+                        <a href="/tags/习题分析/"># 习题分析</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/10/18/某次面试面试题总结/">某次面试面试题总结1</a>
+            
+            
+            <a class="next" rel="next" href="/2019/10/15/mavon-editor-multer图片上传相关设置/">mavon-editor + multer图片上传相关设置</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Icel | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

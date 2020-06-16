@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>leetcode习题3 | Icel&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<link rel="alternate" href="/atom.xml" title="Icel's Blog" type="application/atom+xml">
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Icel&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Icel&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">leetcode习题3</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Icel</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">November 7, 2019&nbsp;&nbsp;16:36:25</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/leetcode习题/">leetcode习题</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>这次的题全军覆没很难受ヾ(。￣ □ ￣)ﾂ゜゜゜，我还是记录一下别人的解题方法吧……</p>
+<h3 id="Number-of-Islands-岛屿数量"><a href="#Number-of-Islands-岛屿数量" class="headerlink" title="Number of Islands 岛屿数量"></a>Number of Islands 岛屿数量</h3><blockquote>
+<p>Given a 2d grid map of ‘1’s (land) and ‘0’s (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.</p>
+</blockquote>
+<h4 id="示例-1："><a href="#示例-1：" class="headerlink" title="示例 1："></a>示例 1：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">11110</span><br><span class="line">11010</span><br><span class="line">11000</span><br><span class="line">00000</span><br><span class="line"></span><br><span class="line">Output: 1</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2："><a href="#示例-2：" class="headerlink" title="示例 2："></a>示例 2：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">11000</span><br><span class="line">11000</span><br><span class="line">00100</span><br><span class="line">00011</span><br><span class="line"></span><br><span class="line">Output: 3</span><br></pre></td></tr></table></figure>
+
+<h4 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h4><p>对这个矩阵进行循环访问每一个点；<br>当这个点等于 1，岛屿数量 count++，与其同时用 dfs 算法（depth first search）访问周围的其他点，进行同样的操作；<br>且将访问过且等于 1 的点标记为零。</p>
+<h4 id="解答："><a href="#解答：" class="headerlink" title="解答："></a>解答：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numIslands = <span class="function"><span class="keyword">function</span>(<span class="params">grid</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> count = <span class="number">0</span> <span class="comment">// 岛屿数量</span></span><br><span class="line">	<span class="keyword">if</span> (grid.length === <span class="number">0</span>) <span class="keyword">return</span> count</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; grid.length; i++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; grid[<span class="number">0</span>].length; j++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (grid[i][j] === <span class="string">'1'</span>) &#123;</span><br><span class="line">				dfsSearch(grid, i, j)</span><br><span class="line">				count++</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> count</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dfsSearch</span>(<span class="params">grid, i, j</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (i &lt; <span class="number">0</span> || j &lt; <span class="number">0</span> || i &gt;= grid.length || j &gt;= grid[<span class="number">0</span>].length) <span class="keyword">return</span></span><br><span class="line">	<span class="keyword">if</span> (grid[i][j] === <span class="string">'1'</span>) &#123;</span><br><span class="line">		grid[i][j] = <span class="string">'0'</span></span><br><span class="line">		dfsSearch(grid, i + <span class="number">1</span>, j) <span class="comment">// 搜索右边</span></span><br><span class="line">		dfsSearch(grid, i - <span class="number">1</span>, j) <span class="comment">// 搜索左边</span></span><br><span class="line">		dfsSearch(grid, i, j + <span class="number">1</span>) <span class="comment">// 搜索下边</span></span><br><span class="line">		dfsSearch(grid, i, j - <span class="number">1</span>) <span class="comment">// 搜索上边</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="香槟塔"><a href="#香槟塔" class="headerlink" title="香槟塔"></a>香槟塔</h3><blockquote>
+<p>我们把玻璃杯摆成金字塔的形状，其中第一层有 1 个玻璃杯，第二层有 2 个，依次类推到第 100 层，每个玻璃杯(250ml)将盛有香槟。<br><br>从顶层的第一个玻璃杯开始倾倒一些香槟，当顶层的杯子满了，任何溢出的香槟都会立刻等流量的流向左右两侧的玻璃杯。当左右两边的杯子也满了，就会等流量的流向它们左右两边的杯子，依次类推。（当最底层的玻璃杯满了，香槟会流到地板上）<br><br>例如，在倾倒一杯香槟后，最顶层的玻璃杯满了。倾倒了两杯香槟后，第二层的两个玻璃杯各自盛放一半的香槟。在倒三杯香槟后，第二层的香槟满了 - 此时总共有三个满的玻璃杯。在倒第四杯后，第三层中间的玻璃杯盛放了一半的香槟，他两边的玻璃杯各自盛放了四分之一的香槟，如下图所示。</p>
+</blockquote>
+<img src="https://icelicecream.github.io/image/香槟塔1.png">
+
+<h4 id="示例-1：-1"><a href="#示例-1：-1" class="headerlink" title="示例 1："></a>示例 1：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: poured(倾倒香槟总杯数) = 1, query_glass(杯子的位置数) = 1, query_row(行数) = 1</span><br><span class="line">输出: 0.0</span><br><span class="line">解释: 我们在顶层（下标是（0，0））倒了一杯香槟后，没有溢出，因此所有在顶层以下的玻璃杯都是空的。</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2：-1"><a href="#示例-2：-1" class="headerlink" title="示例 2："></a>示例 2：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: poured(倾倒香槟总杯数) = 2, query_glass(杯子的位置数) = 1, query_row(行数) = 1</span><br><span class="line">输出: 0.5</span><br><span class="line">解释: 我们在顶层（下标是（0，0）倒了两杯香槟后，有一杯量的香槟将从顶层溢出，位于（1，0）的玻璃杯和（1，1）的玻璃杯平分了这一杯香槟，所以每个玻璃杯有一半的香槟。</span><br></pre></td></tr></table></figure>
+
+<h4 id="思路：-1"><a href="#思路：-1" class="headerlink" title="思路："></a>思路：</h4><p>假设倒入 20 杯酒，每个杯子停留的酒数量有：</p>
+<img src="https://icelicecream.github.io/image/香槟塔2.png">
+
+<p>第 0 层：<br>a[0][0] = 20</p>
+<p>第一层：<br>a[1][0] = (a[0][0] - 1) / 2 = 4.5<br>a[1][1] = (a[0][0] - 1) / 2 = 4.5</p>
+<p>第二层：<br>a[2][0] = (a[1][0]-1) / 2<br>a[2][1] = (a[1][0]-1) / 2 + (a[1][1]-1) / 2<br>a[2][2] = (a[1][1]-1) / 2</p>
+<p>第三层：<br>a[3][0] = (a[2][0]-1)/2<br>a[3][1] = (a[2][0]-1)/2 + (a[2][1]-1)/2<br>a[3][2] = (a[2][1]-1)/2 + (a[2][2]-1)/2<br>a[3][3] = (a[2][2]-1)/2</p>
+<p>第四层：<br>a[4][0] = (a[3][0]-1)/2<br>a[4][1] = (a[3][0]-1)/2 + (a[3][1]-1)/2<br>a[4][2] = (a[3][1]-1)/2 + (a[3][2]-1)/2<br>a[4][3] = (a[3][2]-1)/2 + (a[3][3]-1)/2<br>a[4][3] = (a[3][3]-1)/2</p>
+<p>第 N 层：<br>a[N][0] = (a[N-1][0] - 1)/2<br>a[N][1] = (a[N-1][0] - 1)/2 + (a[N-1][1] - 1)/2<br>a[N][n] = (a[N-1][n-1] - 1) /2</p>
+<p>通过上面，可以推导出第 query_row 层，query_glass 位置的酒杯中酒的分量为：<br>a[query_row][query_glass] = (a[query_row - 1][query_glass-1] - 1) /2 + (a[query_row - 1][query_glass] - 1) /2</p>
+<p>ps：这是假设计算过程中不存在负数的情况 ，实际程序中需要考虑负数场景。</p>
+<h4 id="解答：-1"><a href="#解答：-1" class="headerlink" title="解答："></a>解答：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">champagneTower</span>(<span class="params">poured, query_row, query_glass</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">const</span> arr = []</span><br><span class="line">	<span class="comment">// 生成一个矩阵，并将矩阵内所有数字设为0</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; query_row + <span class="number">2</span>; i++) &#123;</span><br><span class="line">		<span class="keyword">let</span> temp = []</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; query_row + <span class="number">2</span>; j++) &#123;</span><br><span class="line">			temp.push(<span class="number">0</span>)</span><br><span class="line">		&#125;</span><br><span class="line">		arr.push(temp)</span><br><span class="line">	&#125;</span><br><span class="line">	arr[<span class="number">0</span>][<span class="number">0</span>] = poured</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; query_row; i++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt;= i; j++) &#123;</span><br><span class="line">			<span class="keyword">const</span> remain = (arr[i][j] - <span class="number">1</span>) / <span class="number">2</span></span><br><span class="line">			<span class="built_in">console</span>.log(remain)</span><br><span class="line">			<span class="keyword">if</span> (remain &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				arr[i + <span class="number">1</span>][j] += remain</span><br><span class="line">				arr[i + <span class="number">1</span>][j + <span class="number">1</span>] += remain</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> arr[query_row][query_glass] &gt; <span class="number">1</span> ? <span class="number">1</span> : arr[query_row][query_glass]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="最短回文串"><a href="#最短回文串" class="headerlink" title="最短回文串"></a>最短回文串</h3><blockquote>
+<p>给定一个字符串 s，你可以通过在字符串前面添加字符将其转换为回文串。找到并返回可以用这种方式转换的最短回文串。</p>
+</blockquote>
+<h4 id="示例-1：-2"><a href="#示例-1：-2" class="headerlink" title="示例 1："></a>示例 1：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;aacecaaa&quot;</span><br><span class="line">输出: &quot;aaacecaaa&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2：-2"><a href="#示例-2：-2" class="headerlink" title="示例 2："></a>示例 2：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;abcd&quot;</span><br><span class="line">输出: &quot;dcbabcd&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="思路：-2"><a href="#思路：-2" class="headerlink" title="思路："></a>思路：</h4><p>网上提供了三种方法：暴力破解法、递归法和 KMP 算法。暴力破解法不用过多解释，就是想尽所有可能性。下面就说一下递归法和 KMP 法</p>
+<h5 id="递归法："><a href="#递归法：" class="headerlink" title="递归法："></a>递归法：</h5><p>左指针 i 初始化为 0，右指针 j 从 n - 1 递减到 0，其中 n 为字符串 s 的长度，一旦遇上 i 指向的字符与 j 指向的字符相等时，令 i 指针加 1。</p>
+<p>递归出口：</p>
+<p>如果 i 指针最后的值等于 n，说明字符串 s 本身就是回文串，直接返回 s 即可。</p>
+<p>递归过程：</p>
+<p>首先明确一点：我们所要寻找的最长回文子串，该子串的左端点与字符串 s 的左端点重合，一定在[0, i)范围内。</p>
+<p>考虑两种极端情况，第一种情况：字符串 s 本身就是回文串，显然满足条件。第二种情况：在遍历过程中，不存在 i 指向的字符与 j 指向的字符相等的情况，除了 i 和 j 相等时，这种情况我们得到的 i 是 1。显然也满足条件。</p>
+<p>考虑一般性情况：假设我们所要寻找的最长回文子串不在[0, i)范围内，即存在回文串其在[0, k)范围内，其中 k &gt; i。那么显然，在我们遍历的过程中，即使 j 在[k, n - 1]范围时不存在 i 指向的字符与 j 指向的字符相等的情况，最终 i 的值也会到达 k，即 i &gt;= k，这显然矛盾了，因此该结论成立。</p>
+<p>由上述结论，我们得出：[i, n - 1]范围内的子串一定不是我们所要寻找的最长回文子串的一部分。</p>
+<p>这样，我们就可以递归地反转[0, i)范围内的子串来拼接出结果。</p>
+<h5 id="KMP-算法"><a href="#KMP-算法" class="headerlink" title="KMP 算法"></a>KMP 算法</h5><p>将原字符串 s 和其逆序字符串用“#”拼接在一起，利用 KMP 算法中 next 数组的求法求得拼接出的新字符串的最长相同前后缀，就是原字符串 s 中最长的回文子串，该子串的左端点与字符串 s 的左端点重合。</p>
+<p>这个问题是一个动态规划问题：求取字符串 s 中的最长相同前后缀（不能是其本身）</p>
+<p>状态定义：</p>
+<p>f(x) ——– 字符串 s 中[0, x]范围内的最长相同前后缀（不能是其本身）的长度</p>
+<p>状态转移：</p>
+<p>首先是初始化，f(0)显然是 0，因为[0, 0]范围内的字符串长度为 1，其最长相同前后缀根本不存在。</p>
+<p>对于 i 在[1, n - 1]（其中 n 为字符串 s 的长度）范围内的值：</p>
+<p>（1）令 temp 记录 f(x - 1)的值，如果 temp 大于 0 且 s 中 temp 位置的字符和第 i 个字符不相同，那么我们就需要重设 temp 的值为 f(temp - 1)。</p>
+<p>（2）如果 s 中第 i 个字符与第 temp 个字符相同，令 temp 自增 1。</p>
+<p>（3）f(i) = temp。</p>
+<p>上述状态转移过程可能很难理解，以一个例子——“ABABCABAA”来说明，其子串如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">A -------------------------------------------------- 0</span><br><span class="line">AB ------------------------------------------------ 0</span><br><span class="line">ABA ---------------------------------------------- 1</span><br><span class="line">ABAB -------------------------------------------- 2</span><br><span class="line">ABABC ------------------------------------------ 0</span><br><span class="line">ABABCA ---------------------------------------- 1</span><br><span class="line">ABABCAB -------------------------------------- 2</span><br><span class="line">ABABCABA ------------------------------------ 3</span><br><span class="line">ABABCABAA ---------------------------------- 1</span><br></pre></td></tr></table></figure>
+
+<p>对由 ABAB 求得 ABABC 这个过程进行分析：</p>
+<p>C 和 A 不相等，因此结果不可能是 3，如果是 ABABA，则结果是 3。ABAB 的结果是 2，因此我们知道 AB 和 AB 相同，但是第一个 AB 之后跟着的是 A，依然和 C 不相同。我们继续看 AB，AB 的结果是 0，因此我们知道 AB 中 A 和 B 不相同，而 C 和 A 不相同，因此结果是 0。</p>
+<p>对由 ABABCABA 求得 ABABCABAA 这个过程进行分析：</p>
+<p>A 和 B 不相等，因此结果不可能是 4，如果是 ABABCABAB，则结果是 4。ABABCABA 的结果是 3，因此我们知道 ABA 和 ABA 相同，但是第一个 ABA 之后跟着的是 B，依然和 A 不相同。我们继续看 ABA，ABA 的结果是 1，但是第一个 A 之后跟着的是 B，依然和 A 不相同。我们继续看 A，结果是 0，结束 while 循环。这个 A 和 A 相同，因此其值加 1 变成 1。</p>
+<p>时间复杂度和空间复杂度均是 O(n)，其中 n 为字符串 s 的长度。</p>
+<h4 id="解答：-2"><a href="#解答：-2" class="headerlink" title="解答："></a>解答：</h4><p>暴力破解法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">shortestPalindrome</span>(<span class="params">s</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">let</span> index = <span class="number">-1</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">let</span> i = s.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">		<span class="keyword">if</span> (isPalindrome(s.substr(<span class="number">0</span>, i + <span class="number">1</span>))) &#123;</span><br><span class="line">			index = i</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">const</span> res = reverse(s.substr(index + <span class="number">1</span>))</span><br><span class="line">	<span class="keyword">return</span> res + s</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reverse</span>(<span class="params">s</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> [...s].reverse().join(<span class="string">''</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isPalindrome</span>(<span class="params">s</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; s.length / <span class="number">2</span>; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (s.charAt(i) !== s.charAt(s.length - <span class="number">1</span> - i)) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>递归法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">shortestPalindrome</span>(<span class="params">s</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">let</span> index = <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">let</span> j = s.length - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j--) &#123;</span><br><span class="line">		<span class="keyword">if</span> (s.charAt(j) === s.charAt(index)) &#123;</span><br><span class="line">			index++</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (index === s.length) &#123;</span><br><span class="line">		<span class="keyword">return</span> s</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> (</span><br><span class="line">		reverse(s.substr(index)) +</span><br><span class="line">		shortestPalindrome(s.substr(<span class="number">0</span>, index)) +</span><br><span class="line">		s.substr(index)</span><br><span class="line">	)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reverse</span>(<span class="params">s</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> [...s].reverse().join(<span class="string">''</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>KMP 算法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">shortestPalindrome</span>(<span class="params">s</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">const</span> rev = reverse(s)</span><br><span class="line">	<span class="keyword">const</span> temp = s + <span class="string">'#'</span> + rev</span><br><span class="line">	<span class="keyword">const</span> next = getNext(temp)</span><br><span class="line">	<span class="built_in">console</span>.log(next)</span><br><span class="line">	<span class="keyword">return</span> rev.substr(<span class="number">0</span>, rev.length - next[temp.length - <span class="number">1</span>]) + s</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reverse</span>(<span class="params">s</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> [...s].reverse().join(<span class="string">''</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getNext</span>(<span class="params">s</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">const</span> res = <span class="keyword">new</span> <span class="built_in">Array</span>(s.length)</span><br><span class="line">	res[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; res.length; i++) &#123;</span><br><span class="line">		<span class="keyword">let</span> temp = res[i - <span class="number">1</span>]</span><br><span class="line">		<span class="keyword">while</span> (temp &gt; <span class="number">0</span> &amp;&amp; s.charAt(i) !== s.charAt(temp)) &#123;</span><br><span class="line">			temp = res[temp - <span class="number">1</span>]</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (s.charAt(i) === s.charAt(temp)) &#123;</span><br><span class="line">			temp++</span><br><span class="line">		&#125;</span><br><span class="line">		res[i] = temp</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/leetcode习题/"># leetcode习题</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/11/08/欧拉计划2/">欧拉计划2</a>
+            
+            
+            <a class="next" rel="next" href="/2019/11/07/leetcode习题2/">leetcode习题2</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Icel | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
